@@ -1,0 +1,10 @@
+{
+  "name": "react-native-behavior",
+  "description": "Easily create stateful React Native animations.",
+  "version": "0.0.1",
+  "main": "behavior.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sonaye/react-native-behavior.git"
+  }
+}
