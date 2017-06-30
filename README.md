@@ -8,9 +8,9 @@
 # Definition
 ```javascript
 type behavior = {
-  configs?: { // default configs
+  configs?: { // animateTo() default configs
     mode?: 'spring' | 'timing', // default = 'spring'
-    callback?: Function, // to be executed after switching to new state
+    callback?: Function, // to be executed after switching to a new state
     ...AnimatedSpringOptions, // excluding toValue, useNativeDriver
     ...AnimatedTimingOptions // excluding toValue, useNativeDriver
   },
@@ -21,7 +21,7 @@ type behavior = {
     opacity?: number,
     rotate?: string, // e.g. '0deg', '180deg'
     scale?: number,
-    translateX: ?number,
+    translateX?: number,
     translateY?: number,
     width?: number, // no percentages
   }>, // minimum two states
