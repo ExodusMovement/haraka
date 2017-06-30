@@ -6,13 +6,13 @@ import Behavior from '../behavior';
 const { height, width } = Dimensions.get('window');
 
 const Example = () => {
-  let index;
+  let goTo;
 
   return (
     <View style={{ flex: 1 }}>
       <Behavior
         initialState={1}
-        ref={ref => (index = ref.animateTo)}
+        ref={ref => (goTo = ref.animateTo)}
         states={[
           { backgroundColor: '#db4437', height: 60 },
           { backgroundColor: '#0f9d58', height: 260 },
@@ -35,9 +35,9 @@ const Example = () => {
           position: 'absolute',
           right: 0
         }}>
-        <Button title="Close" color="#fff" onPress={() => index(0)} />
-        <Button title="Open" color="#fff" onPress={() => index(1)} />
-        <Button title="Expand" color="#fff" onPress={() => index(2)} />
+        <Button title="Close" color="#fff" onPress={() => goTo(0)} />
+        <Button title="Open" color="#fff" onPress={() => goTo(1)} />
+        <Button title="Expand" color="#fff" onPress={() => goTo(2)} />
       </View>
     </View>
   );

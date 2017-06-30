@@ -11,28 +11,18 @@ export default class Behavior extends Component {
       ...configs
     };
 
-    if (mode === 'timing')
-      Animated.parallel([
-        Animated.timing(this.nativeValue, {
-          ...options,
-          toValue,
-          useNativeDriver: true
-        }),
-        Animated.timing(this.value, { ...options, toValue })
-      ]).start(animation => {
-        if (animation.finished && callback) callback();
-      });
-    else
-      Animated.parallel([
-        Animated.spring(this.nativeValue, {
-          ...options,
-          toValue,
-          useNativeDriver: true
-        }),
-        Animated.spring(this.value, { ...options, toValue })
-      ]).start(animation => {
-        if (animation.finished && callback) callback();
-      });
+    const animate = mode === 'timing' ? Animated.timing : Animated.spring;
+
+    Animated.parallel([
+      animate(this.nativeValue, {
+        ...options,
+        toValue,
+        useNativeDriver: true
+      }),
+      animate(this.value, { ...options, toValue })
+    ]).start(animation => {
+      if (animation.finished && callback) callback();
+    });
   };
 
   render() {
@@ -52,7 +42,7 @@ export default class Behavior extends Component {
       width: 0
     };
 
-    const outputRange = prop => {
+    const getRange = prop => {
       const range = [];
 
       for (let i = 0; i < states.length; i += 1) {
@@ -75,42 +65,42 @@ export default class Behavior extends Component {
 
     const backgroundColor = value.interpolate({
       inputRange,
-      outputRange: outputRange('backgroundColor')
+      outputRange: getRange('backgroundColor')
     });
 
     const height = value.interpolate({
       inputRange,
-      outputRange: outputRange('height')
+      outputRange: getRange('height')
     });
 
     const opacity = nativeValue.interpolate({
       inputRange,
-      outputRange: outputRange('opacity')
+      outputRange: getRange('opacity')
     });
 
     const rotate = nativeValue.interpolate({
       inputRange,
-      outputRange: outputRange('rotate')
+      outputRange: getRange('rotate')
     });
 
     const scale = nativeValue.interpolate({
       inputRange,
-      outputRange: outputRange('scale')
+      outputRange: getRange('scale')
     });
 
     const translateX = nativeValue.interpolate({
       inputRange,
-      outputRange: outputRange('translateX')
+      outputRange: getRange('translateX')
     });
 
     const translateY = nativeValue.interpolate({
       inputRange,
-      outputRange: outputRange('translateY')
+      outputRange: getRange('translateY')
     });
 
     const width = value.interpolate({
       inputRange,
-      outputRange: outputRange('width')
+      outputRange: getRange('width')
     });
 
     const nativeStyles = {
