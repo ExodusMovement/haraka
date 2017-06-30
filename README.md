@@ -2,7 +2,7 @@
 <img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/demos/demo1.gif" width="400">
 <img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/demos/demo2.gif" width="400">
 
-You define the behavior (states) of the component, and then you animate between them.
+You define the behavior (states) of the component, and then animate between them.
 
 # Installation
 `yarn add react-native-behavior`
