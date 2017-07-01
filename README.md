@@ -4,6 +4,7 @@
 <img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/demos/demo3.gif" width="400">
 <img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/demos/demo4.gif" width="400">
 <img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/demos/demo5.gif" width="400">
+<img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/demos/demo6.gif" width="400">
 
 You define the behavior (states) of the component, and then animate between them.
 
