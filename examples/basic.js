@@ -15,7 +15,7 @@ const Example = () => {
             { backgroundColor: '#d8d8d8', scale: 1 },
             { backgroundColor: '#4285f4', scale: 2.5 },
             { backgroundColor: '#0f9d58', scale: 5 },
-            { backgroundColor: '#d8d8d8', scale: 10 }
+            { backgroundColor: '#f4b400', scale: 10 }
           ]}
           style={{
             borderRadius: 10,
@@ -31,7 +31,7 @@ const Example = () => {
         <Button color="#d8d8d8" title="1x" onPress={() => goTo(0)} />
         <Button color="#4285f4" title="2.5x" onPress={() => goTo(1)} />
         <Button color="#0f9d58" title="5x" onPress={() => goTo(2)} />
-        <Button color="#d8d8d8" title="10x" onPress={() => goTo(3)} />
+        <Button color="#f4b400" title="10x" onPress={() => goTo(3)} />
       </View>
     </View>
   );
