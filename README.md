@@ -38,7 +38,8 @@ type behavior = {
 };
 
 // methods
-behavior.animateTo(index: number, configs?: Object = {}); // change behavior state
+behavior.animateTo(index: number, configs?: Object = {}) // change behavior state
+behavior.getIndex() // retrieve current state index
 ```
 
 ## Examples
