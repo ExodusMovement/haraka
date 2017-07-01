@@ -63,11 +63,9 @@ export default class extends Component {
     const getRange = prop => {
       const range = [];
 
-      // todo: don't use for
       for (let i = 0; i < states.length; i += 1) {
         let prevState;
 
-        // todo: don't use for
         for (let j = i - 1; j >= 0; j -= 1) {
           prevState = states[j] && states[j][prop];
           if (prevState) break;
