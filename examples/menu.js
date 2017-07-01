@@ -5,8 +5,8 @@ import { Text, View } from 'react-native';
 
 import Behavior from '../behavior';
 
-const Example = () =>
-  <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+const Example = () => {
+  const Container = ({ children }) =>
     <Behavior
       configs={{ mode: 'timing', duration: 250 }}
       indices={[0, 1]}
@@ -42,63 +42,81 @@ const Example = () =>
           this.dot.animateTo(1);
         }
       }}>
-      <Behavior
-        configs={{ mode: 'timing', duration: 250 }}
-        indices={[0, 1, 2]}
-        ref={ref => (this.highlight = ref)}
-        states={[
-          { backgroundColor: 'transparent' },
-          { backgroundColor: '#25921e' },
-          { translateY: 50 }
-        ]}
-        style={{
-          height: 50,
-          overflow: 'hidden',
-          position: 'absolute',
-          width: 200
-        }}
-      />
+      {children}
+    </Behavior>;
 
-      <Behavior
-        configs={{ mode: 'timing', duration: 250 }}
-        indices={[0, 1]}
-        ref={ref => (this.labels = ref)}
-        states={[{ translateX: -200 }, { translateX: -1 }]}
-        style={{
-          height: 100,
-          left: 20,
-          position: 'absolute',
-          top: 15,
-          width: 200
-        }}>
-        <View style={{ height: 50 }}>
-          <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>
-            Economy
-          </Text>
-        </View>
-        <View style={{ height: 50 }}>
-          <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>
-            Business
-          </Text>
-        </View>
-      </Behavior>
+  const Highlight = () =>
+    <Behavior
+      configs={{ mode: 'timing', duration: 250 }}
+      indices={[0, 1, 2]}
+      ref={ref => (this.highlight = ref)}
+      states={[
+        { backgroundColor: 'transparent' },
+        { backgroundColor: '#25921e' },
+        { translateY: 50 }
+      ]}
+      style={{
+        height: 50,
+        overflow: 'hidden',
+        position: 'absolute',
+        width: 200
+      }}
+    />;
 
-      <Behavior
-        configs={{ mode: 'timing', duration: 250 }}
-        indices={[0, 1, 2]}
-        ref={ref => (this.dot = ref)}
-        states={[{}, { translateX: 200 - 50 }, { translateY: 50 }]}
-        style={{
-          backgroundColor: '#fff',
-          borderRadius: 15,
-          height: 30,
-          marginLeft: 10,
-          marginTop: 10,
-          overflow: 'hidden',
-          width: 30
-        }}
-      />
-    </Behavior>
-  </View>;
+  const Labels = () =>
+    <Behavior
+      configs={{ mode: 'timing', duration: 250 }}
+      indices={[0, 1]}
+      ref={ref => (this.labels = ref)}
+      states={[{ translateX: -200 }, { translateX: -1 }]}
+      style={{
+        height: 100,
+        left: 20,
+        position: 'absolute',
+        top: 15,
+        width: 200
+      }}>
+      <View style={{ height: 50 }}>
+        <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>
+          Economy
+        </Text>
+      </View>
+      <View style={{ height: 50 }}>
+        <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>
+          Business
+        </Text>
+      </View>
+    </Behavior>;
+
+  const Dot = () =>
+    <Behavior
+      configs={{ mode: 'timing', duration: 250 }}
+      indices={[0, 1, 2]}
+      ref={ref => (this.dot = ref)}
+      states={[{}, { translateX: 200 - 50 }, { translateY: 50 }]}
+      style={{
+        backgroundColor: '#fff',
+        borderRadius: 15,
+        height: 30,
+        marginLeft: 10,
+        marginTop: 10,
+        overflow: 'hidden',
+        width: 30
+      }}
+    />;
+
+  const Menu = () =>
+    <Container>
+      <Highlight />
+      <Labels />
+      <Dot />
+    </Container>;
+
+  return (
+    <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+      <Menu />
+    </View>
+  );
+};
 
 export default Example;

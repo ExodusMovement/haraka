@@ -11,9 +11,13 @@ const Example = () => {
       <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
         <Behavior
           ref={ref => (goTo = ref.animateTo)}
-          states={[{ scale: 1 }, { scale: 2.5 }, { scale: 5 }, { scale: 10 }]}
+          states={[
+            { backgroundColor: '#d8d8d8', scale: 1 },
+            { backgroundColor: '#4285f4', scale: 2.5 },
+            { backgroundColor: '#0f9d58', scale: 5 },
+            { backgroundColor: '#d8d8d8', scale: 10 }
+          ]}
           style={{
-            backgroundColor: '#d8d8d8',
             borderRadius: 10,
             height: 20,
             overflow: 'hidden',
@@ -25,8 +29,8 @@ const Example = () => {
 
       <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
         <Button color="#d8d8d8" title="1x" onPress={() => goTo(0)} />
-        <Button color="#d8d8d8" title="2.5x" onPress={() => goTo(1)} />
-        <Button color="#d8d8d8" title="5x" onPress={() => goTo(2)} />
+        <Button color="#4285f4" title="2.5x" onPress={() => goTo(1)} />
+        <Button color="#0f9d58" title="5x" onPress={() => goTo(2)} />
         <Button color="#d8d8d8" title="10x" onPress={() => goTo(3)} />
       </View>
     </View>
