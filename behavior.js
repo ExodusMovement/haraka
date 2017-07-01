@@ -31,6 +31,7 @@ export default class extends Component {
     const { nativeValue, value } = this;
 
     const {
+      children,
       enableGestures,
       indices,
       initialState,
@@ -139,14 +140,18 @@ export default class extends Component {
       return (
         <NativeBehavior {...this.pan.panHandlers}>
           <Touchable>
-            <Behavior />
+            <Behavior>
+              {children}
+            </Behavior>
           </Touchable>
         </NativeBehavior>
       );
 
     return (
       <NativeBehavior>
-        <Behavior />
+        <Behavior>
+          {children}
+        </Behavior>
       </NativeBehavior>
     );
   }
