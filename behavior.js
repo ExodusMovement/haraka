@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
-import { Animated } from 'react-native';
+import {
+  Animated,
+  Dimensions,
+  PanResponder,
+  TouchableOpacity
+} from 'react-native';
 
-export default class Behavior extends Component {
+export default class extends Component {
   nativeValue = new Animated.Value(0);
   value = new Animated.Value(0);
 
@@ -26,8 +31,14 @@ export default class Behavior extends Component {
   };
 
   render() {
-    const { props, nativeValue, value } = this;
-    const { children, initialState, states, style } = props;
+    const { nativeValue, value } = this;
+    const {
+      initialState,
+      states,
+      style,
+      enableGestures,
+      onGesture
+    } = this.props;
 
     const inputRange = [...Array(states.length).keys()];
 
@@ -55,9 +66,7 @@ export default class Behavior extends Component {
 
         range[i] =
           states[i][prop] ||
-          (prevState ||
-            ((this.props.style && this.props.style[prop]) ||
-              defaultState[prop]));
+          (prevState || ((style && style[prop]) || defaultState[prop]));
       }
 
       return range;
@@ -111,14 +120,55 @@ export default class Behavior extends Component {
 
     const styles = { backgroundColor, height, width };
 
-    if (initialState) this.animateTo(initialState);
+    if (initialState) {
+      nativeValue.setValue(initialState);
+      value.setValue(initialState);
+    }
+
+    if (enableGestures) {
+      this.pan = PanResponder.create({
+        onMoveShouldSetPanResponder: (event, gesture) => {
+          const dx = gesture.dx / Dimensions.get('window').width;
+          const dy = gesture.dy / Dimensions.get('window').height;
+          const isVertical = () => Math.abs(dy) > Math.abs(dx);
+          const isHorizontal = () => !isVertical();
+          onGesture({
+            swipedLeft: isHorizontal() && dx < 0,
+            swipedRight: isHorizontal() && dx > 0,
+            swipedUp: isVertical() && dy < 0,
+            swipedDown: isVertical() && dy > 0
+          });
+          return true;
+        }
+      });
+    }
+
+    const NativeBehavior = props =>
+      <Animated.View style={[style, nativeStyles]} {...props} />;
+
+    const Behavior = props => <Animated.View style={styles} {...props} />;
+
+    const Touchable = props =>
+      <TouchableOpacity
+        activeOpacity={1}
+        onLongPress={() => onGesture({ longPressed: true })}
+        onPress={() => onGesture({ pressed: true })}
+        {...props}
+      />;
+
+    if (enableGestures)
+      return (
+        <NativeBehavior {...this.pan.panHandlers}>
+          <Touchable>
+            <Behavior />
+          </Touchable>
+        </NativeBehavior>
+      );
 
     return (
-      <Animated.View style={[style, nativeStyles]}>
-        <Animated.View style={styles}>
-          {children}
-        </Animated.View>
-      </Animated.View>
+      <NativeBehavior>
+        <Behavior />
+      </NativeBehavior>
     );
   }
 }

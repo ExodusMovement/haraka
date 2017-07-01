@@ -1,6 +1,9 @@
 # react-native-behavior
 <img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/demos/demo1.gif" width="400">
 <img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/demos/demo2.gif" width="400">
+<img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/demos/demo3.gif" width="400">
+<img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/demos/demo4.gif" width="400">
+<img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/demos/demo5.gif" width="400">
 
 You define the behavior (states) of the component, and then animate between them.
 
@@ -28,10 +31,12 @@ type behavior = {
     width?: number, // no percentages
   }>, // minimum two states required
   style?: Object // default = {}
+  enableGestures?: boolean, // simple swipe up/down/left/right and pressed/long pressed
+  onGesture?: Function // e.g. gesture => console.log(gesture)
 };
 
 // methods
-behavior.animateTo(index: number, configs?: Object = {});
+behavior.animateTo(index: number, configs?: Object = {}); // change behavior state
 ```
 
 ## Example
