@@ -30,9 +30,10 @@ type behavior = {
     translateY?: number, // default = 0
     width?: number, // no percentages
   }>, // minimum two states required
-  style?: Object // default = {}
+  style?: Object, // default = {}
   enableGestures?: boolean, // simple swipe up/down/left/right and pressed/long pressed
-  onGesture?: Function // e.g. gesture => console.log(gesture)
+  onGesture?: Function, // e.g. gesture => console.log(gesture)
+  indices?: Array<number> // android only, a temporary workaround to fix a glitch
 };
 
 // methods

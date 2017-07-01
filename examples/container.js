@@ -23,6 +23,7 @@ const Example = () => {
           position: 'absolute',
           width
         }}
+        indices={[0, 1, 2]} // android only
       />
 
       <View

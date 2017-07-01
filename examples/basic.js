@@ -19,6 +19,7 @@ const Example = () => {
             overflow: 'hidden',
             width: 20
           }}
+          indices={[0, 1, 2, 3]} // android only
         />
       </View>
 

@@ -23,6 +23,7 @@ const Example = () => {
             { translateY: -50 },
             { width: 150 }
           ]}
+          indices={[0, 1, 2, 3, 4, 5, 6, 7, 8]} // android only
         />
       </View>
 

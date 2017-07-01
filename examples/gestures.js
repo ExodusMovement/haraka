@@ -27,6 +27,7 @@ const Example = () => {
           if (gesture.pressed) alert('Pressed!');
           if (gesture.longPressed) alert('Long pressed!');
         }}
+        indices={[0, 1]} // android only
       />
     </View>
   );

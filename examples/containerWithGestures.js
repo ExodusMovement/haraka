@@ -44,6 +44,7 @@ export default class extends Component {
                   this.behavior.animateTo(0)
                 );
           }}
+          indices={[0, 1, 2]} // android only
         />
       </View>
     );
