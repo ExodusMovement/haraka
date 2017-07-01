@@ -53,8 +53,8 @@ export default class extends Component {
       width: 0
     };
 
-    const addProp = prop => {
-      const outputRange = [];
+    const getRange = prop => {
+      const range = [];
 
       // todo: don't use for
       for (let i = 0; i < states.length; i += 1) {
@@ -66,21 +66,28 @@ export default class extends Component {
           if (prevState) break;
         }
 
-        outputRange[i] =
+        range[i] =
           states[i][prop] ||
           (prevState || ((style && style[prop]) || defaultState[prop]));
       }
 
-      return value.interpolate({ inputRange, outputRange });
+      return range;
     };
+
+    const addNativeProp = prop =>
+      nativeValue.interpolate({ inputRange, outputRange: getRange(prop) });
+
+    const addProp = prop =>
+      value.interpolate({ inputRange, outputRange: getRange(prop) });
+
+    const opacity = addNativeProp('opacity');
+    const rotate = addNativeProp('rotate');
+    const scale = addNativeProp('scale');
+    const translateX = addNativeProp('translateX');
+    const translateY = addNativeProp('translateY');
 
     const backgroundColor = addProp('backgroundColor');
     const height = addProp('height');
-    const opacity = addProp('opacity');
-    const rotate = addProp('rotate');
-    const scale = addProp('scale');
-    const translateX = addProp('translateX');
-    const translateY = addProp('translateY');
     const width = addProp('width');
 
     const nativeStyles = {
