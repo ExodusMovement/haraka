@@ -8,6 +8,10 @@ import {
 } from 'react-native';
 
 export default class extends Component {
+  getIndex = () => this.index;
+
+  index = this.props.initialState || 0;
+
   nativeValue = new Animated.Value(0);
   value = new Animated.Value(0);
 
@@ -25,6 +29,8 @@ export default class extends Component {
     ]).start(animation => {
       if (animation.finished && callback) callback();
     });
+
+    this.index = toValue;
   };
 
   render() {
