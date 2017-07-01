@@ -16,6 +16,7 @@ const Example = () => {
             backgroundColor: '#d8d8d8',
             borderRadius: 10,
             height: 20,
+            overflow: 'hidden',
             width: 20
           }}
         />

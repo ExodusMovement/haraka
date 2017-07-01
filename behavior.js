@@ -114,7 +114,6 @@ export default class extends Component {
 
     const nativeStyles = {
       opacity,
-      overflow: 'hidden',
       transform: [{ rotate }, { scale }, { translateX }, { translateY }]
     };
 
@@ -130,13 +129,12 @@ export default class extends Component {
         onMoveShouldSetPanResponder: (event, gesture) => {
           const dx = gesture.dx / Dimensions.get('window').width;
           const dy = gesture.dy / Dimensions.get('window').height;
-          const isVertical = () => Math.abs(dy) > Math.abs(dx);
-          const isHorizontal = () => !isVertical();
+          const isVertical = Math.abs(dy) > Math.abs(dx);
           onGesture({
-            swipedLeft: isHorizontal() && dx < 0,
-            swipedRight: isHorizontal() && dx > 0,
-            swipedUp: isVertical() && dy < 0,
-            swipedDown: isVertical() && dy > 0
+            swipedLeft: !isVertical && dx < 0,
+            swipedRight: !isVertical && dx > 0,
+            swipedUp: isVertical && dy < 0,
+            swipedDown: isVertical && dy > 0
           });
           return true;
         }
