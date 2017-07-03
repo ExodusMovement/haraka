@@ -80,10 +80,18 @@ export default class extends Component {
     };
 
     const addNativeProp = prop =>
-      nativeValue.interpolate({ inputRange, outputRange: getRange(prop) });
+      nativeValue.interpolate({
+        inputRange,
+        outputRange: getRange(prop),
+        extrapolate: 'clamp'
+      });
 
     const addProp = prop =>
-      value.interpolate({ inputRange, outputRange: getRange(prop) });
+      value.interpolate({
+        inputRange,
+        outputRange: getRange(prop),
+        extrapolate: 'clamp'
+      });
 
     const opacity = addNativeProp('opacity');
     const rotate = addNativeProp('rotate');
