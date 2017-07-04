@@ -43,9 +43,10 @@ export default class extends Component {
       indices,
       initialState,
       onGesture,
-      states,
-      style
+      states
     } = this.props;
+
+    const style = this.props.style || {};
 
     const inputRange =
       Platform.OS === 'android' ? indices : [...Array(states.length).keys()];
@@ -61,24 +62,13 @@ export default class extends Component {
       width: 0
     };
 
-    const getRange = prop => {
-      const range = [];
-
-      for (let i = 0; i < states.length; i += 1) {
-        let prevState;
-
-        for (let j = i - 1; j >= 0; j -= 1) {
-          prevState = states[j] && states[j][prop];
-          if (prevState) break;
-        }
-
-        range[i] =
-          states[i][prop] ||
-          (prevState || ((style && style[prop]) || defaultState[prop]));
-      }
-
-      return range;
-    };
+    const getRange = prop =>
+      states.reduce((range, state, i) => {
+        range.push(
+          state[prop] || range[i - 1] || style[prop] || defaultState[prop]
+        );
+        return range;
+      }, []);
 
     const addNativeProp = prop =>
       nativeValue.interpolate({
