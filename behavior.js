@@ -38,6 +38,7 @@ export default class extends Component {
 
     const {
       children,
+      clamp,
       enableGestures,
       indices,
       initialState,
@@ -83,14 +84,14 @@ export default class extends Component {
       nativeValue.interpolate({
         inputRange,
         outputRange: getRange(prop),
-        extrapolate: 'clamp'
+        extrapolate: clamp ? 'clamp' : null
       });
 
     const addProp = prop =>
       value.interpolate({
         inputRange,
         outputRange: getRange(prop),
-        extrapolate: 'clamp'
+        extrapolate: clamp ? 'clamp' : null
       });
 
     const opacity = addNativeProp('opacity');

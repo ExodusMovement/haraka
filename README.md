@@ -34,7 +34,8 @@ type behavior = {
   style?: Object, // default = {}
   enableGestures?: boolean, // simple swipe up/down/left/right and pressed/long pressed
   onGesture?: Function, // e.g. gesture => console.log(gesture)
-  indices?: Array<number> // android only, a temporary workaround to fix a glitch
+  indices?: Array<number>, // android only, a temporary workaround to fix a glitch
+  clamp?: boolean // default = false, prevent animations from exceeding their ranges
 };
 
 // methods
