@@ -35,7 +35,8 @@ type behavior = {
   enableGestures?: boolean, // simple swipe up/down/left/right and pressed/long pressed
   onGesture?: Function, // e.g. gesture => console.log(gesture)
   indices?: Array<number>, // android only, a temporary workaround to fix a glitch
-  clamp?: boolean // default = false, prevent animations from exceeding their ranges
+  clamp?: boolean, // default = false, prevent animations from exceeding their ranges
+  swipeThreshold?: { velocity?: number, distance?: number } // default = { velocity: 0.3, distance: 10 }
 };
 
 // methods

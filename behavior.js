@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
   Animated,
-  Dimensions,
   PanResponder,
   Platform,
   TouchableOpacity
@@ -43,7 +42,8 @@ export default class extends Component {
       indices,
       initialState,
       onGesture,
-      states
+      states,
+      swipeThreshold
     } = this.props;
 
     const style = this.props.style || {};
@@ -113,21 +113,45 @@ export default class extends Component {
     }
 
     if (enableGestures) {
+      let swiped;
+      let swipeVelocity = null;
+      let swipeDistance = null;
+
+      const velocityThr = (swipeThreshold && swipeThreshold.velocity) || 0.3;
+      const distanceThr = (swipeThreshold && swipeThreshold.distance) || 10;
+
       this.pan = PanResponder.create({
-        onMoveShouldSetPanResponder: (event, gesture) => {
-          const dx = gesture.dx / Dimensions.get('window').width;
-          const dy = gesture.dy / Dimensions.get('window').height;
+        onMoveShouldSetPanResponder: e => e.nativeEvent.touches.length === 1,
+        onPanResponderMove: (e, { dx, dy, vx, vy }) => {
+          if (Math.abs(vx) > velocityThr && Math.abs(dy) < distanceThr) {
+            swipeVelocity = vx;
+            swipeDistance = dx;
 
-          const isVertical = Math.abs(dy) > Math.abs(dx);
+            if (dx < 0) swiped = 'left';
+            else if (dx > 0) swiped = 'right';
+          } else if (Math.abs(vy) > velocityThr && Math.abs(dx) < distanceThr) {
+            swipeVelocity = vy;
+            swipeDistance = dy;
 
-          onGesture({
-            swipedLeft: !isVertical && dx < 0,
-            swipedRight: !isVertical && dx > 0,
-            swipedUp: isVertical && dy < 0,
-            swipedDown: isVertical && dy > 0
-          });
+            if (dy < 0) swiped = 'up';
+            else if (dy > 0) swiped = 'down';
+          }
+        },
+        onPanResponderRelease: () => {
+          if (swiped && onGesture) {
+            onGesture({
+              swipedLeft: swiped === 'left',
+              swipedRight: swiped === 'right',
+              swipedUp: swiped === 'up',
+              swipedDown: swiped === 'down',
+              swipeVelocity,
+              swipeDistance
+            });
 
-          return true;
+            swiped = null;
+            swipeVelocity = null;
+            swipeDistance = null;
+          }
         }
       });
     }
