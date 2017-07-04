@@ -25,7 +25,7 @@ const Example = () => {
           this.dot.animateTo(1);
         }
 
-        if (gesture.swipedLeft && !gesture.swipedDown && !gesture.swipedUp) {
+        if (gesture.swipedLeft && this.menu.getIndex() === 1) {
           this.menu.animateTo(0, { duration: 350 });
           this.highlight.animateTo(0, { duration: 350 });
           this.labels.animateTo(0, { duration: 350 });

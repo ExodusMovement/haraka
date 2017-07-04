@@ -64,14 +64,17 @@ export default class extends Component {
 
     const getRange = prop =>
       states.reduce((range, state, i) => {
-        let propValue = defaultState[prop];
+        const prevState = range[i - 1];
 
-        [style[prop], range[i - 1], state[prop]].forEach(possibleValue => {
-          if (possibleValue) propValue = possibleValue;
-          else if (possibleValue === 0) propValue = 0;
-        });
-
-        range.push(propValue);
+        range.push(
+          state[prop] || state[prop] === 0
+            ? state[prop]
+            : prevState || prevState === 0
+              ? prevState
+              : style[prop] || style[prop] === 0
+                ? style[prop]
+                : defaultState[prop]
+        );
 
         return range;
       }, []);
