@@ -68,7 +68,7 @@ const Example = () => {
       configs={{ mode: 'timing', duration: 250 }}
       indices={[0, 1]}
       ref={ref => (this.labels = ref)}
-      states={[{ translateX: -200 }, { translateX: -1 }]}
+      states={[{ translateX: -200 }, { translateX: 0 }]}
       style={{
         height: 100,
         left: 20,
