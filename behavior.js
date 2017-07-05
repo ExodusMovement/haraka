@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
-import {
-  Animated,
-  PanResponder,
-  Platform,
-  TouchableOpacity
-} from 'react-native';
+import { Animated, PanResponder, TouchableOpacity } from 'react-native';
 
 export default class extends Component {
   getIndex = () => this.index;
 
   index = this.props.initialState || 0;
 
-  nativeValue = new Animated.Value(0);
-  value = new Animated.Value(0);
+  nativeValue = this.props.animatedNativeValue || new Animated.Value(0);
+  value = this.props.animatedValue || new Animated.Value(0);
 
   animateTo = (toValue, configs = {}) => {
     const { mode, callback, ...options } = {
@@ -48,8 +43,7 @@ export default class extends Component {
 
     const style = this.props.style || {};
 
-    const inputRange =
-      Platform.OS === 'android' ? indices : [...Array(states.length).keys()];
+    const inputRange = indices || [...Array(states.length).keys()];
 
     const defaultState = {
       backgroundColor: 'transparent',

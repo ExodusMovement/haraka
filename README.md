@@ -34,9 +34,14 @@ type behavior = {
   style?: Object, // default = {}
   enableGestures?: boolean, // simple swipe up/down/left/right and pressed/long pressed
   onGesture?: Function, // e.g. gesture => console.log(gesture)
-  indices?: Array<number>, // android only, a temporary workaround to fix a glitch
+  indices?: Array<number>, // required on android, can also be used with custom drivers to define state keys
   clamp?: boolean, // default = false, prevent animations from exceeding their ranges
-  swipeThreshold?: { velocity?: number, distance?: number } // default = { velocity: 0.3, distance: 10 }
+  swipeThreshold?: { velocity?: number, distance?: number }, // default = { velocity: 0.3, distance: 10 }
+  animatedNativeValue?: AnimatedValue, // default = new Animated.Value(0), use a custom native driver
+  animatedValue?: AnimatedValue // default = new Animated.Value(0), use a custom driver
+  // animatedNativeValue and animatedValue should be used together, different instances of Animated.Value
+  // animatedNativeValue is needed for opacity, rotate, scale, translateX and translateY
+  // animatedValue is needed for backgroundColor, height and width
 };
 
 // methods
