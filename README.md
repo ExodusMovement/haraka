@@ -3,6 +3,22 @@
 
 You define the behavior states of the component, and then animate between them.
 
+```javascript
+<Behavior
+  ref={ref => (this.box = ref)}
+  states={[
+    { backgroundColor: 'gray', height: 100, width: 100 }, // state 0
+    { backgroundColor: 'green' }, // state 1
+    { height: 150 }, // state 2
+    { opacity: 0.5 }, // state 3
+    { rotate: '45deg' }, // state 4
+  ]}
+/>
+
+this.box.animateTo(1);
+this.box.animateSequence([2, 3, 4]);
+``
+
 More demos available [here](https://github.com/sonaye/react-native-behavior/tree/master/demos).
 
 # Installation
