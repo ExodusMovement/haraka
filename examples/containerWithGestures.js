@@ -8,7 +8,7 @@ const { height, width } = Dimensions.get('window');
 const Example = () =>
   <View style={{ flex: 1 }}>
     <Behavior
-      ref={ref => (this.c = ref)}
+      ref={ref => (this.container = ref)}
       states={[
         { backgroundColor: '#db4437', height: 100 },
         { backgroundColor: '#0f9d58', height: 300 },
@@ -22,11 +22,11 @@ const Example = () =>
       enableGestures
       onGesture={gesture => {
         if (gesture.swipedUp)
-          if (this.c.getIndex() === 0) this.c.animateTo(1);
-          else this.c.animateTo(2);
+          if (this.container.index === 0) this.container.goTo(1);
+          else this.container.goTo(2);
         else if (gesture.swipedDown)
-          if (this.c.getIndex() === 2) this.c.animateTo(1);
-          else this.c.animateTo(0);
+          if (this.container.index === 2) this.container.goTo(1);
+          else this.container.goTo(0);
       }}
       indices={[0, 1, 2]} // android only
       swipeThreshold={{ distance: 40 }}

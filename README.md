@@ -15,8 +15,8 @@ You define the behavior states of the component, and then animate between them.
   ]}
 />
 
-this.box.animateTo(1);
-this.box.animateSequence([2, 3, 4]);
+this.box.goTo(1);
+this.box.play([2, 3, 4]);
 ```
 
 More demos available [here](https://github.com/sonaye/react-native-behavior/tree/master/demos).
@@ -27,7 +27,7 @@ More demos available [here](https://github.com/sonaye/react-native-behavior/tree
 # Definition
 ```javascript
 type behavior = {
-  configs?: { // animateTo() default configs
+  config?: { // goTo() default config
     mode?: 'spring' | 'timing', // default = 'spring'
     callback?: Function, // to be executed after switching to a new state
     ...AnimatedSpringOptions, // excluding toValue, useNativeDriver (see React Native docs)
@@ -58,9 +58,10 @@ type behavior = {
 };
 
 // methods
-behavior.animateTo(index: number, configs?: Object = {}) // animate to a specific behavior state
-behavior.animateSequence(indices: Array<number>, configs?: Object = {}) // animate a sequence of behavior states
-behavior.getIndex() // retrieve current state index, or you can directly use behavior.index
+behavior.goTo(index: number, config?: Object = {}) // animate to a specific behavior state
+behavior.play(indices: Array<number>, config?: Object = {}) // animate a sequence of behavior states
+
+// to retrieve current state index use you can directly use behavior.index
 ```
 
 ## Examples

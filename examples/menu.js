@@ -8,7 +8,7 @@ import Behavior from '../behavior';
 const Example = () => {
   const Container = ({ children }) =>
     <Behavior
-      configs={{ mode: 'timing', duration: 250 }}
+      config={{ mode: 'timing', duration: 250 }}
       indices={[0, 1]}
       ref={ref => (this.menu = ref)}
       states={[
@@ -18,28 +18,28 @@ const Example = () => {
       style={{ borderRadius: 25, overflow: 'hidden', width: 200 }}
       enableGestures
       onGesture={gesture => {
-        if (gesture.swipedRight && this.menu.getIndex() === 0) {
-          this.menu.animateTo(1);
-          this.highlight.animateTo(1);
-          this.labels.animateTo(1);
-          this.dot.animateTo(1);
+        if (gesture.swipedRight && this.menu.index === 0) {
+          this.menu.goTo(1);
+          this.highlight.goTo(1);
+          this.labels.goTo(1);
+          this.dot.goTo(1);
         }
 
-        if (gesture.swipedLeft && this.menu.getIndex() === 1) {
-          this.menu.animateTo(0, { duration: 350 });
-          this.highlight.animateTo(0, { duration: 350 });
-          this.labels.animateTo(0, { duration: 350 });
-          this.dot.animateTo(0, { duration: 350 });
+        if (gesture.swipedLeft && this.menu.index === 1) {
+          this.menu.goTo(0, { duration: 350 });
+          this.highlight.goTo(0, { duration: 350 });
+          this.labels.goTo(0, { duration: 350 });
+          this.dot.goTo(0, { duration: 350 });
         }
 
-        if (gesture.swipedDown && this.menu.getIndex() === 1) {
-          this.highlight.animateTo(2);
-          this.dot.animateTo(2);
+        if (gesture.swipedDown && this.menu.index === 1) {
+          this.highlight.goTo(2);
+          this.dot.goTo(2);
         }
 
-        if (gesture.swipedUp && this.menu.getIndex() === 1) {
-          this.highlight.animateTo(1);
-          this.dot.animateTo(1);
+        if (gesture.swipedUp && this.menu.index === 1) {
+          this.highlight.goTo(1);
+          this.dot.goTo(1);
         }
       }}>
       {children}
@@ -47,7 +47,7 @@ const Example = () => {
 
   const Highlight = () =>
     <Behavior
-      configs={{ mode: 'timing', duration: 250 }}
+      config={{ mode: 'timing', duration: 250 }}
       indices={[0, 1, 2]}
       ref={ref => (this.highlight = ref)}
       states={[
@@ -65,7 +65,7 @@ const Example = () => {
 
   const Labels = () =>
     <Behavior
-      configs={{ mode: 'timing', duration: 250 }}
+      config={{ mode: 'timing', duration: 250 }}
       indices={[0, 1]}
       ref={ref => (this.labels = ref)}
       states={[{ translateX: -200 }, { translateX: 0 }]}
@@ -90,7 +90,7 @@ const Example = () => {
 
   const Dot = () =>
     <Behavior
-      configs={{ mode: 'timing', duration: 250 }}
+      config={{ mode: 'timing', duration: 250 }}
       indices={[0, 1, 2]}
       ref={ref => (this.dot = ref)}
       states={[{}, { translateX: 200 - 50 }, { translateY: 50 }]}

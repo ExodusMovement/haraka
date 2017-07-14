@@ -10,7 +10,7 @@ const Example = () => {
     <View style={{ flex: 1 }}>
       <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
         <Behavior
-          ref={ref => (goTo = ref.animateTo)}
+          ref={ref => (goTo = ref.goTo)}
           states={[
             { backgroundColor: '#d8d8d8', scale: 1 },
             { backgroundColor: '#4285f4', scale: 2.5 },

@@ -11,10 +11,10 @@ const Example = () => {
   for (let i = 2; i < height / 20; i += 1)
     rows.push(
       <Behavior
-        configs={{ mode: 'timing', delay: i * 250 }}
+        config={{ mode: 'timing', delay: i * 250 }}
         indices={[0, 1, 2, 3, 4]}
         key={i}
-        ref={ref => ref.animateSequence([1, 2, 3, 4])}
+        ref={ref => ref.play([1, 2, 3, 4])}
         states={[
           { translateX: -width, opacity: 0 },
           { translateX: 0, opacity: 1 },

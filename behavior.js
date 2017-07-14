@@ -2,17 +2,15 @@ import React, { Component } from 'react';
 import { Animated, PanResponder, TouchableOpacity } from 'react-native';
 
 export default class extends Component {
-  getIndex = () => this.index;
-
   index = this.props.initialState || 0;
 
   nativeValue = this.props.animatedNativeValue || new Animated.Value(0);
   value = this.props.animatedValue || new Animated.Value(0);
 
-  animateTo = (toValue, configs = {}) => {
+  goTo = (toValue, config = {}) => {
     const { mode, callback, ...options } = {
-      ...this.props.configs,
-      ...configs
+      ...this.props.config,
+      ...config
     };
 
     const animate = mode === 'timing' ? Animated.timing : Animated.spring;
@@ -27,10 +25,10 @@ export default class extends Component {
     this.index = toValue;
   };
 
-  animateSequence = (values, configs = {}) => {
+  play = (values, config = {}) => {
     const { mode, callback, ...options } = {
-      ...this.props.configs,
-      ...configs
+      ...this.props.config,
+      ...config
     };
 
     const animate = mode === 'timing' ? Animated.timing : Animated.spring;

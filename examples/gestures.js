@@ -13,7 +13,7 @@ const Example = () => {
   return (
     <View style={{ flex: 1, justifyContent: 'center' }}>
       <Behavior
-        ref={ref => (goTo = ref.animateTo)}
+        ref={ref => (goTo = ref.goTo)}
         states={[{ translateX: 0 }, { translateX: width - l }]}
         style={{
           backgroundColor: '#d8d8d8',

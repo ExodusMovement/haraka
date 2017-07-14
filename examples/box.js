@@ -11,10 +11,10 @@ const Example = () => {
     <View style={{ flex: 1 }}>
       <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
         <Behavior
-          configs={{ mode: 'timing', duration: 250 }}
+          config={{ mode: 'timing', duration: 250 }}
           ref={ref => {
-            goTo = ref.animateTo;
-            play = ref.animateSequence;
+            goTo = ref.goTo;
+            play = ref.play;
           }}
           states={[
             { backgroundColor: '#d8d8d8', height: 100, width: 100 },

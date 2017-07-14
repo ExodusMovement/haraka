@@ -12,7 +12,7 @@ const Example = () => {
     <View style={{ flex: 1 }}>
       <Behavior
         initialState={1}
-        ref={ref => (goTo = ref.animateTo)}
+        ref={ref => (goTo = ref.goTo)}
         states={[
           { backgroundColor: '#db4437', height: 60 },
           { backgroundColor: '#0f9d58', height: 260 },
