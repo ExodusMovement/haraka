@@ -17,7 +17,7 @@ You define the behavior states of the component, and then animate between them.
 
 this.box.animateTo(1);
 this.box.animateSequence([2, 3, 4]);
-``
+```
 
 More demos available [here](https://github.com/sonaye/react-native-behavior/tree/master/demos).
 
