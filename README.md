@@ -8,10 +8,10 @@ You define the behavior states of the component, and then animate between them.
   ref={ref => (this.box = ref)}
   states={[
     { backgroundColor: 'gray', height: 100, width: 100 }, // state 0
-    { backgroundColor: 'green' },                         // state 1
-    { height: 150 },                                      // state 2
-    { opacity: 0.5 },                                     // state 3
-    { rotate: '45deg' },                                  // state 4
+    { backgroundColor: 'green' }, // state 1
+    { height: 150 }, // state 2
+    { opacity: 0.5 }, // state 3
+    { rotate: '45deg' }, // state 4
   ]}
 />
 
@@ -49,11 +49,12 @@ type behavior = {
   style?: Object, // default = {}
   enableGestures?: boolean, // simple swipe up/down/left/right and pressed/long pressed
   onGesture?: Function, // e.g. gesture => console.log(gesture)
-  indices?: Array<number>, // required on android to avoid a glitch, can also be used with custom drivers to define custom state keys/values
+  indices?: Array<number>, // required on android to avoid a glitch
+  // indices can also be used with custom drivers to define custom state keys/values
   clamp?: boolean, // default = false, prevent animations from exceeding their ranges
   swipeThreshold?: { velocity?: number, distance?: number }, // default = { velocity: 0.3, distance: 10 }
-  animatedNativeValue?: AnimatedValue, // default = new Animated.Value(0), use a custom native animated driver
-  animatedValue?: AnimatedValue // default = new Animated.Value(0), use a custom animated driver
+  animatedNativeValue?: AnimatedValue, // default = new Animated.Value(0), use a custom native driver
+  animatedValue?: AnimatedValue // default = new Animated.Value(0), use a custom driver
   // animatedNativeValue and animatedValue should be used together, different instances of Animated.Value
   // animatedNativeValue is needed for opacity, rotate, scale, translateX and translateY
   // animatedValue is needed for backgroundColor, height and width
