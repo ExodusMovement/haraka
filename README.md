@@ -1,14 +1,9 @@
 # react-native-behavior
 <img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/demos/demo1.gif" width="400">
-<img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/demos/demo2.gif" width="400">
-<img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/demos/demo3.gif" width="400">
-<img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/demos/demo4.gif" width="400">
-<img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/demos/demo5.gif" width="400">
-<img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/demos/demo6.gif" width="400">
-<img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/demos/demo7.gif" width="400">
-<img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/demos/demo8.gif" width="400">
 
-You define the behavior (states) of the component, and then animate between them.
+You define the behavior states of the component, and then animate between them.
+
+More demos available [here](https://github.com/sonaye/react-native-behavior/tree/master/demos).
 
 # Installation
 `yarn add react-native-behavior`
@@ -25,13 +20,13 @@ type behavior = {
   initialState?: number, // default = 0
   states: Array<{
     backgroundColor?: string, // default = 'transparent'
-    height?: number, // no percentages, default = 0
+    height?: number, // no percentages, default = null
     opacity?: number, // [0, 1], default = 1
     rotate?: string, // e.g. '45deg', default = '0deg'
     scale?: number, // default = 1
     translateX?: number, // default = 0
     translateY?: number, // default = 0
-    width?: number, // no percentages
+    width?: number, // no percentages, default = null
   }>, // minimum two states required
   style?: Object, // default = {}
   enableGestures?: boolean, // simple swipe up/down/left/right and pressed/long pressed
@@ -47,8 +42,9 @@ type behavior = {
 };
 
 // methods
-behavior.animateTo(index: number, configs?: Object = {}) // change behavior state
-behavior.getIndex() // retrieve current state index
+behavior.animateTo(index: number, configs?: Object = {}) // animate to a specific behavior state
+behavior.animateSequence(indices: Array<number>, configs?: Object = {}) // animate a sequence of behavior states
+behavior.getIndex() // retrieve current state index, or you can directly use behavior.index
 ```
 
 ## Examples

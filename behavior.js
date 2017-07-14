@@ -27,6 +27,36 @@ export default class extends Component {
     this.index = toValue;
   };
 
+  animateSequence = (values, configs = {}) => {
+    const { mode, callback, ...options } = {
+      ...this.props.configs,
+      ...configs
+    };
+
+    const animate = mode === 'timing' ? Animated.timing : Animated.spring;
+
+    const states = [];
+
+    values.forEach(toValue =>
+      states.push(
+        Animated.parallel([
+          animate(this.nativeValue, {
+            ...options,
+            toValue,
+            useNativeDriver: true
+          }),
+          animate(this.value, { ...options, toValue })
+        ])
+      )
+    );
+
+    Animated.sequence(states).start(animation => {
+      if (animation.finished && callback) callback();
+    });
+
+    this.index = values[values.length - 1];
+  };
+
   render() {
     const { nativeValue, value } = this;
 
@@ -47,13 +77,13 @@ export default class extends Component {
 
     const defaultState = {
       backgroundColor: 'transparent',
-      height: 0,
+      height: null,
       opacity: 1,
       rotate: '0deg',
       scale: 1,
       translateX: 0,
       translateY: 0,
-      width: 0
+      width: null
     };
 
     const getRange = prop =>

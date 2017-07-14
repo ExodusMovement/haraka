@@ -5,13 +5,17 @@ import Behavior from '../behavior';
 
 const Example = () => {
   let goTo;
+  let play;
 
   return (
     <View style={{ flex: 1 }}>
       <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
         <Behavior
           configs={{ mode: 'timing', duration: 250 }}
-          ref={ref => (goTo = ref.animateTo)}
+          ref={ref => {
+            goTo = ref.animateTo;
+            play = ref.animateSequence;
+          }}
           states={[
             { backgroundColor: '#d8d8d8', height: 100, width: 100 },
             { backgroundColor: '#0f9d58' },
@@ -42,6 +46,24 @@ const Example = () => {
         <Button color="#d8d8d8" title="translateX" onPress={() => goTo(6)} />
         <Button color="#d8d8d8" title="translateY" onPress={() => goTo(7)} />
         <Button color="#d8d8d8" title="width" onPress={() => goTo(8)} />
+      </View>
+
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'center'
+        }}>
+        <Button
+          color="#d8d8d8"
+          title="play"
+          onPress={() => play([1, 2, 3, 4, 5, 6, 7, 8])}
+        />
+        <Button
+          color="#d8d8d8"
+          title="reset"
+          onPress={() => play([7, 6, 5, 4, 3, 2, 1, 0])}
+        />
       </View>
     </View>
   );
