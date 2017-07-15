@@ -2,57 +2,52 @@ import React, { Component } from 'react';
 import { Animated, PanResponder, TouchableOpacity } from 'react-native';
 
 export default class extends Component {
-  index = this.props.initialState || 0;
+  static defaultProps = {
+    config: { mode: 'spring' },
+    initialState: 0,
+    style: {},
+    enableGestures: false,
+    clamp: false,
+    swipeVelocityThreshold: 0.3,
+    swipeDistanceThreshold: 10
+  };
 
   nativeValue = this.props.animatedNativeValue || new Animated.Value(0);
   value = this.props.animatedValue || new Animated.Value(0);
 
-  goTo = (toValue, config = {}) => {
+  index = this.props.initialState;
+
+  goTo = (value, config = {}) => {
     const { mode, callback, ...options } = {
       ...this.props.config,
       ...config
     };
 
-    const animate = mode === 'timing' ? Animated.timing : Animated.spring;
+    const curve = mode === 'timing' ? Animated.timing : Animated.spring;
 
-    Animated.parallel([
-      animate(this.nativeValue, { ...options, toValue, useNativeDriver: true }),
-      animate(this.value, { ...options, toValue })
-    ]).start(animation => {
-      if (animation.finished && callback) callback();
-    });
+    const animate = toValue =>
+      Animated.parallel([
+        curve(this.nativeValue, { ...options, toValue, useNativeDriver: true }),
+        curve(this.value, { ...options, toValue })
+      ]);
 
-    this.index = toValue;
-  };
+    if (Array.isArray(value)) {
+      const states = [];
 
-  play = (values, config = {}) => {
-    const { mode, callback, ...options } = {
-      ...this.props.config,
-      ...config
-    };
+      value.forEach(toValue => states.push(animate(toValue)));
 
-    const animate = mode === 'timing' ? Animated.timing : Animated.spring;
+      Animated.sequence(states).start(animation => {
+        if (animation.finished && callback) callback();
+      });
 
-    const states = [];
+      this.index = states[states.length - 1];
+    } else {
+      animate(value).start(animation => {
+        if (animation.finished && callback) callback();
+      });
 
-    values.forEach(toValue =>
-      states.push(
-        Animated.parallel([
-          animate(this.nativeValue, {
-            ...options,
-            toValue,
-            useNativeDriver: true
-          }),
-          animate(this.value, { ...options, toValue })
-        ])
-      )
-    );
-
-    Animated.sequence(states).start(animation => {
-      if (animation.finished && callback) callback();
-    });
-
-    this.index = values[values.length - 1];
+      this.index = value;
+    }
   };
 
   render() {
@@ -66,25 +61,14 @@ export default class extends Component {
       initialState,
       onGesture,
       states,
-      swipeThreshold
+      style,
+      swipeVelocityThreshold,
+      swipeDistanceThreshold
     } = this.props;
-
-    const style = this.props.style || {};
 
     const inputRange = indices || [...Array(states.length).keys()];
 
-    const defaultState = {
-      backgroundColor: 'transparent',
-      height: null,
-      opacity: 1,
-      rotate: '0deg',
-      scale: 1,
-      translateX: 0,
-      translateY: 0,
-      width: null
-    };
-
-    const getRange = prop =>
+    const getRange = (prop, defaultValue) =>
       states.reduce((range, state, i) => {
         const prevState = range[i - 1];
 
@@ -93,37 +77,35 @@ export default class extends Component {
             ? state[prop]
             : prevState || prevState === 0
               ? prevState
-              : style[prop] || style[prop] === 0
-                ? style[prop]
-                : defaultState[prop]
+              : style[prop] || style[prop] === 0 ? style[prop] : defaultValue
         );
 
         return range;
       }, []);
 
-    const addNativeProp = prop =>
+    const addNativeProp = (prop, defaultValue) =>
       nativeValue.interpolate({
         inputRange,
-        outputRange: getRange(prop),
+        outputRange: getRange(prop, defaultValue),
         extrapolate: clamp ? 'clamp' : null
       });
 
-    const addProp = prop =>
+    const addProp = (prop, defaultValue) =>
       value.interpolate({
         inputRange,
-        outputRange: getRange(prop),
+        outputRange: getRange(prop, defaultValue),
         extrapolate: clamp ? 'clamp' : null
       });
 
-    const opacity = addNativeProp('opacity');
-    const rotate = addNativeProp('rotate');
-    const scale = addNativeProp('scale');
-    const translateX = addNativeProp('translateX');
-    const translateY = addNativeProp('translateY');
+    const opacity = addNativeProp('opacity', 1);
+    const rotate = addNativeProp('rotate', '0deg');
+    const scale = addNativeProp('scale', 1);
+    const translateX = addNativeProp('translateX', 0);
+    const translateY = addNativeProp('translateY', 0);
 
-    const backgroundColor = addProp('backgroundColor');
-    const height = addProp('height');
-    const width = addProp('width');
+    const backgroundColor = addProp('backgroundColor', 'transparent');
+    const height = addProp('height', null);
+    const width = addProp('width', null);
 
     const nativeStyles = {
       opacity,
@@ -142,19 +124,22 @@ export default class extends Component {
       let swipeVelocity = null;
       let swipeDistance = null;
 
-      const velocityThr = (swipeThreshold && swipeThreshold.velocity) || 0.3;
-      const distanceThr = (swipeThreshold && swipeThreshold.distance) || 10;
-
       this.pan = PanResponder.create({
         onMoveShouldSetPanResponder: e => e.nativeEvent.touches.length === 1,
         onPanResponderMove: (e, { dx, dy, vx, vy }) => {
-          if (Math.abs(vx) > velocityThr && Math.abs(dy) < distanceThr) {
+          if (
+            Math.abs(vx) > swipeVelocityThreshold &&
+            Math.abs(dy) < swipeDistanceThreshold
+          ) {
             swipeVelocity = vx;
             swipeDistance = dx;
 
             if (dx < 0) swiped = 'left';
             else if (dx > 0) swiped = 'right';
-          } else if (Math.abs(vy) > velocityThr && Math.abs(dx) < distanceThr) {
+          } else if (
+            Math.abs(vy) > swipeVelocityThreshold &&
+            Math.abs(dx) < swipeDistanceThreshold
+          ) {
             swipeVelocity = vy;
             swipeDistance = dy;
 

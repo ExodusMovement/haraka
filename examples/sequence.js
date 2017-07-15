@@ -14,7 +14,7 @@ const Example = () => {
         config={{ mode: 'timing', delay: i * 250 }}
         indices={[0, 1, 2, 3, 4]}
         key={i}
-        ref={ref => ref.play([1, 2, 3, 4])}
+        ref={ref => ref.goTo([1, 2, 3, 4])}
         states={[
           { translateX: -width, opacity: 0 },
           { translateX: 0, opacity: 1 },

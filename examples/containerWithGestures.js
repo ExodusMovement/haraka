@@ -29,7 +29,7 @@ const Example = () =>
           else this.container.goTo(0);
       }}
       indices={[0, 1, 2]} // android only
-      swipeThreshold={{ distance: 40 }}
+      swipeDistanceThreshold={40}
     />
   </View>;
 
