@@ -1,4 +1,7 @@
 # react-native-behavior
+
+[![npm version](https://badge.fury.io/js/react-native-behavior.svg)](https://badge.fury.io/js/react-native-behavior)
+
 <img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/examples/demos/demo1.gif" width="400">
 
 You define the behavior states of the component, and then animate between them.
