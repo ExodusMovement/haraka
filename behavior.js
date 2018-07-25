@@ -77,7 +77,9 @@ export default class extends Component {
             ? state[prop]
             : prevState || prevState === 0
               ? prevState
-              : style[prop] || style[prop] === 0 ? style[prop] : defaultValue
+              : style[prop] || style[prop] === 0
+                ? style[prop]
+                : defaultValue
         );
 
         return range;
@@ -99,7 +101,11 @@ export default class extends Component {
 
     const opacity = addNativeProp('opacity', 1);
     const rotate = addNativeProp('rotate', '0deg');
+    const rotateX = addNativeProp('rotateX', '0deg');
+    const rotateY = addNativeProp('rotateY', '0deg');
     const scale = addNativeProp('scale', 1);
+    const scaleX = addNativeProp('scaleX', 1);
+    const scaleY = addNativeProp('scaleY', 1);
     const translateX = addNativeProp('translateX', 0);
     const translateY = addNativeProp('translateY', 0);
 
@@ -109,7 +115,16 @@ export default class extends Component {
 
     const nativeStyles = {
       opacity,
-      transform: [{ rotate }, { scale }, { translateX }, { translateY }]
+      transform: [
+        { rotate },
+        { rotateX },
+        { rotateY },
+        { scale },
+        { scaleX },
+        { scaleY },
+        { translateX },
+        { translateY }
+      ]
     };
 
     const styles = { backgroundColor, height, width };
@@ -166,35 +181,33 @@ export default class extends Component {
       });
     }
 
-    const NativeBehavior = props =>
-      <Animated.View style={[style, nativeStyles]} {...props} />;
+    const NativeBehavior = props => (
+      <Animated.View style={[style, nativeStyles]} {...props} />
+    );
 
     const Behavior = props => <Animated.View style={styles} {...props} />;
 
-    const Touchable = props =>
+    const Touchable = props => (
       <TouchableOpacity
         activeOpacity={1}
         onLongPress={() => onGesture({ longPressed: true })}
         onPress={() => onGesture({ pressed: true })}
         {...props}
-      />;
+      />
+    );
 
     if (enableGestures)
       return (
         <NativeBehavior {...this.pan.panHandlers}>
           <Touchable>
-            <Behavior>
-              {children}
-            </Behavior>
+            <Behavior>{children}</Behavior>
           </Touchable>
         </NativeBehavior>
       );
 
     return (
       <NativeBehavior>
-        <Behavior>
-          {children}
-        </Behavior>
+        <Behavior>{children}</Behavior>
       </NativeBehavior>
     );
   }
