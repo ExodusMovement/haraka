@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import { Animated, PanResponder, TouchableOpacity } from 'react-native';
 
 export default class extends Component {
+  nativeValue = this.props.animatedNativeValue || new Animated.Value(0);
+  value = this.props.animatedValue || new Animated.Value(0);
+
+  index = this.props.initialState;
+
   static defaultProps = {
     config: { mode: 'spring' },
     initialState: 0,
@@ -11,11 +16,6 @@ export default class extends Component {
     swipeVelocityThreshold: 0.3,
     swipeDistanceThreshold: 10
   };
-
-  nativeValue = this.props.animatedNativeValue || new Animated.Value(0);
-  value = this.props.animatedValue || new Animated.Value(0);
-
-  index = this.props.initialState;
 
   goTo = (value, config = {}) => {
     const { mode, callback, ...options } = {
@@ -200,7 +200,7 @@ export default class extends Component {
       />
     );
 
-    if (enableGestures)
+    if (enableGestures) {
       return (
         <NativeBehavior {...this.pan.panHandlers}>
           <Touchable>
@@ -208,6 +208,7 @@ export default class extends Component {
           </Touchable>
         </NativeBehavior>
       );
+    }
 
     return (
       <NativeBehavior>
