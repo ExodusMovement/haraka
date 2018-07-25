@@ -2,10 +2,13 @@
   "license": "MIT",
   "name": "react-native-behavior",
   "description": "Stateful animations in React Native.",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "main": "behavior.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sonaye/react-native-behavior.git"
-  }
+  },
+  "files": [
+    "behavior.js"
+  ]
 }

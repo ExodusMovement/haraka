@@ -10,12 +10,12 @@ You define the behavior states of the component, and then animate between them.
 <Behavior
   ref={ref => (this.box = ref)}
   states={[
-    { backgroundColor: 'gray' },  // state 0
+    { backgroundColor: 'gray' }, // state 0
     { backgroundColor: 'green' }, // state 1
-    { opacity: 0.5 },             // state 2
-    { rotate: '45deg' },          // state 3
+    { opacity: 0.5 }, // state 2
+    { rotate: '45deg' } // state 3
   ]}
-/>
+/>;
 
 // ..
 
@@ -28,10 +28,14 @@ this.box.goTo([1, 2, 3]); // plays a sequence of behavior states, colorize then 
 
 More demos available [here](https://github.com/sonaye/react-native-behavior/tree/master/examples/demos).
 
-# Installation
-`yarn add react-native-behavior`
+# Install
+
+```bash
+yarn add react-native-behavior
+```
 
 # Definition
+
 ```javascript
 type behavior = {
   config?: { // goTo() default configuration
@@ -50,12 +54,15 @@ type behavior = {
     translateX?: number, // default = 0
     translateY?: number, // default = 0
     width?: number, // no percentages, default = null
+    rotateX?: string, // e.g. '45deg', default = '0deg'
+    rotateY?: string, // e.g. '45deg', default = '0deg'
+    scaleX?: number, // default = 1
+    scaleY?: number, // default = 1
   }>, // minimum two states required
   style?: Object, // default = {}, AnimatedViewStyle (see React Native docs)
   enableGestures?: boolean, // simple swipe up/down/left/right and pressed/long pressed
   onGesture?: Function, // e.g. gesture => console.log(gesture)
-  indices?: Array<number>, // required on android to avoid a glitch
-  // indices can also be used with custom drivers to define custom state keys/values
+  indices?: Array<number>, // can be used with custom drivers to define custom state keys/values
   clamp?: boolean, // default = false, prevent animations from exceeding their ranges
   swipeVelocityThreshold?: number, // default = 0.3
   swipeDistanceThreshold?: number, // default = 10
@@ -74,4 +81,5 @@ behavior.index // to retrieve current state index
 ```
 
 ## Examples
+
 Available [here](https://github.com/sonaye/react-native-behavior/tree/master/examples).
