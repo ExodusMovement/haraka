@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
+
 import { Animated, PanResponder, TouchableOpacity } from 'react-native';
 
-export default class extends Component {
+export default class Behavior extends React.PureComponent {
   nativeValue = this.props.animatedNativeValue || new Animated.Value(0);
   value = this.props.animatedValue || new Animated.Value(0);
 
