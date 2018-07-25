@@ -66,7 +66,11 @@ export default class extends Component {
       swipeDistanceThreshold
     } = this.props;
 
-    const inputRange = indices || [...Array(states.length).keys()];
+    const inputRange =
+      indices ||
+      Array(states.length)
+        .fill()
+        .map((_, index) => index);
 
     const getRange = (prop, defaultValue) =>
       states.reduce((range, state, i) => {
