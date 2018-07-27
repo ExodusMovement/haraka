@@ -10,7 +10,7 @@ export default class Behavior extends React.PureComponent {
 
   static defaultProps = {
     clamp: false,
-    config: { mode: 'spring' },
+    config: { type: 'spring' },
     enableGestures: false,
     initialState: 0,
     state: [{}, {}],
@@ -22,12 +22,12 @@ export default class Behavior extends React.PureComponent {
   goTo = (value, config = {}) => {
     const { config: defaultConfig } = this.props;
 
-    const { mode, callback, ...options } = {
+    const { type, onComplete, ...options } = {
       ...defaultConfig,
       ...config
     };
 
-    const curve = mode === 'timing' ? Animated.timing : Animated.spring;
+    const curve = type === 'timing' ? Animated.timing : Animated.spring;
 
     const animate = toValue =>
       Animated.parallel([
@@ -45,13 +45,13 @@ export default class Behavior extends React.PureComponent {
       value.forEach(toValue => state.push(animate(toValue)));
 
       Animated.sequence(state).start(animation => {
-        if (animation.finished && callback) callback();
+        if (animation.finished && onComplete) onComplete();
       });
 
       this.index = state[state.length - 1];
     } else {
       animate(value).start(animation => {
-        if (animation.finished && callback) callback();
+        if (animation.finished && onComplete) onComplete();
       });
 
       this.index = value;

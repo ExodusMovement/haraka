@@ -48,8 +48,8 @@ yarn add haraka
 type behavior = {
   config?: {
     // goTo() default configuration
-    mode?: 'spring' | 'timing', // default = 'spring'
-    callback?: func, // to be executed after animating to a new state
+    type?: 'spring' | 'timing', // default = 'spring'
+    onComplete?: func, // to be executed after animating to a new state
     ...AnimatedSpringOptions, // excluding toValue, useNativeDriver (see React Native docs)
     ...AnimatedTimingOptions // excluding toValue, useNativeDriver (see React Native docs)
   },
