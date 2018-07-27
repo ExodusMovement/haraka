@@ -22,7 +22,7 @@ export default class Behavior extends React.PureComponent {
   goTo = (value, config = {}) => {
     const { config: defaultConfig } = this.props;
 
-    const { type, onComplete, ...options } = {
+    const { type, onComplete, ref, ...options } = {
       ...defaultConfig,
       ...config
     };
@@ -44,18 +44,26 @@ export default class Behavior extends React.PureComponent {
 
       value.forEach(toValue => state.push(animate(toValue)));
 
-      Animated.sequence(state).start(animation => {
-        if (animation.finished && onComplete) onComplete();
-      });
-
       this.index = state[state.length - 1];
-    } else {
-      animate(value).start(animation => {
+
+      const animationRef = Animated.sequence(state);
+
+      if (ref) return animationRef;
+
+      return animationRef.start(animation => {
         if (animation.finished && onComplete) onComplete();
       });
-
-      this.index = value;
     }
+
+    this.index = value;
+
+    const animationRef = animate(value);
+
+    if (ref) return animationRef;
+
+    return animationRef.start(animation => {
+      if (animation.finished && onComplete) onComplete();
+    });
   };
 
   render() {

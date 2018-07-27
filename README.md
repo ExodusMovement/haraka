@@ -50,6 +50,9 @@ type behavior = {
     // goTo() default configuration
     type?: 'spring' | 'timing', // default = 'spring'
     onComplete?: func, // to be executed after animating to a new state
+    ref?: bool, // this will return the animation reference instead of playing it immediately
+    // can be useful for animating multiple behaviors with Animated.sequence and Animated.parallel
+    // onComplete is ignored when `ref` is enabled
     ...AnimatedSpringOptions, // excluding toValue, useNativeDriver (see React Native docs)
     ...AnimatedTimingOptions // excluding toValue, useNativeDriver (see React Native docs)
   },

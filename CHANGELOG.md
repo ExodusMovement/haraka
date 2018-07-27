@@ -14,6 +14,7 @@
 ```
 
 - You can now use an animation and layout preset from the available presets with the `preset` and `layoutPreset` props.
+- You can now get the animation reference instead of playing it immediately with the `ref` option in `goTo()` configuration. This can be useful for animating multiple behaviors with `Animated.sequence` and `Animated.parallel`.
 - Use Rollup to bundle the package.
 
 # 0.0.19
