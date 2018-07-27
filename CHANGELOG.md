@@ -1,3 +1,7 @@
+# 0.0.20
+
+- **Breaking**: Project has been renamed to `haraka`.
+
 # 0.0.19
 
 - Support rotate and scale native props (`rotateX`, `rotateY`, `scaleX`, `scaleY`).

@@ -1,12 +1,12 @@
 {
   "license": "MIT",
-  "name": "react-native-behavior",
+  "name": "haraka",
   "description": "Stateful animations in React Native.",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "main": "behavior.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sonaye/react-native-behavior.git"
+    "url": "git+https://github.com/sonaye/haraka.git"
   },
   "files": [
     "behavior.js"

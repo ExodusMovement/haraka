@@ -1,10 +1,12 @@
-# react-native-behavior
+# Haraka
 
-[![npm version](https://badge.fury.io/js/react-native-behavior.svg)](https://badge.fury.io/js/react-native-behavior)
+[![npm version](https://badge.fury.io/js/haraka.svg)](https://badge.fury.io/js/haraka)
 
-<img src="https://raw.githubusercontent.com/sonaye/react-native-behavior/master/examples/demos/demo1.gif" width="400">
+<img src="qaf.svg" alt="Qaf logo" width="96">
 
 You define the behavior states of the component, and then animate between them.
+
+<img src="examples/demos/demo1.gif" width="400">
 
 ```javascript
 <Behavior
@@ -26,12 +28,12 @@ this.box.goTo(3); // rotates the faded green box 45 degrees, starting from 0
 this.box.goTo([1, 2, 3]); // plays a sequence of behavior states, colorize then fade then tilt
 ```
 
-More demos available [here](https://github.com/sonaye/react-native-behavior/tree/master/examples/demos).
+More demos available [here](/examples/demos).
 
 # Install
 
 ```bash
-yarn add react-native-behavior
+yarn add haraka
 ```
 
 # Definition
@@ -82,4 +84,4 @@ behavior.index // to retrieve current state index
 
 ## Examples
 
-Available [here](https://github.com/sonaye/react-native-behavior/tree/master/examples).
+Available [here](/examples).
