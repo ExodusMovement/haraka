@@ -3,83 +3,142 @@ import React from 'react';
 import { Animated, PanResponder, TouchableOpacity } from 'react-native';
 
 export default class Behavior extends React.PureComponent {
-  nativeValue = this.props.animatedNativeValue || new Animated.Value(0);
-  value = this.props.animatedValue || new Animated.Value(0);
+  nativeDriver = this.props.nativeDriver || new Animated.Value(0);
+  driver = this.props.driver || new Animated.Value(0);
 
   index = this.props.initialState;
 
   static defaultProps = {
-    config: { mode: 'spring' },
-    initialState: 0,
-    style: {},
-    enableGestures: false,
     clamp: false,
-    swipeVelocityThreshold: 0.3,
-    swipeDistanceThreshold: 10
+    config: { type: 'spring' },
+    enableGestures: false,
+    initialState: 0,
+    state: [{}, {}],
+    style: {},
+    swipeDistanceThreshold: 10,
+    swipeVelocityThreshold: 0.3
   };
 
   goTo = (value, config = {}) => {
-    const { mode, callback, ...options } = {
-      ...this.props.config,
+    const { config: defaultConfig } = this.props;
+
+    const { type, onComplete, ref, ...options } = {
+      ...defaultConfig,
       ...config
     };
 
-    const curve = mode === 'timing' ? Animated.timing : Animated.spring;
+    const curve = type === 'timing' ? Animated.timing : Animated.spring;
 
     const animate = toValue =>
       Animated.parallel([
-        curve(this.nativeValue, { ...options, toValue, useNativeDriver: true }),
-        curve(this.value, { ...options, toValue })
+        curve(this.nativeDriver, {
+          ...options,
+          toValue,
+          useNativeDriver: true
+        }),
+        curve(this.driver, { ...options, toValue })
       ]);
 
     if (Array.isArray(value)) {
-      const states = [];
+      const state = [];
 
-      value.forEach(toValue => states.push(animate(toValue)));
+      value.forEach(toValue => state.push(animate(toValue)));
 
-      Animated.sequence(states).start(animation => {
-        if (animation.finished && callback) callback();
+      this.index = state[state.length - 1];
+
+      const animationRef = Animated.sequence(state);
+
+      if (ref) return animationRef;
+
+      return animationRef.start(animation => {
+        if (animation.finished && onComplete) onComplete();
       });
-
-      this.index = states[states.length - 1];
-    } else {
-      animate(value).start(animation => {
-        if (animation.finished && callback) callback();
-      });
-
-      this.index = value;
     }
+
+    this.index = value;
+
+    const animationRef = animate(value);
+
+    if (ref) return animationRef;
+
+    return animationRef.start(animation => {
+      if (animation.finished && onComplete) onComplete();
+    });
   };
 
   render() {
-    const { nativeValue, value } = this;
+    const { nativeDriver, driver } = this;
 
     const {
+      driver: _driver,
+      nativeDriver: _nativeDriver,
+      state: _state,
+      // ..
       children,
       clamp,
+      config,
       enableGestures,
       indices,
       initialState,
       onGesture,
-      states,
       style,
+      swipeDistanceThreshold,
       swipeVelocityThreshold,
-      swipeDistanceThreshold
+      // ..
+      faded,
+      // ..
+      absolute,
+      centered,
+      fixed,
+      full,
+      landing,
+      // ..
+      ...rest
     } = this.props;
+
+    let { state } = this.props;
+
+    const presets = {
+      faded: [{ opacity: 0 }, { opacity: 1 }]
+    };
+
+    if (faded) state = presets.faded;
+
+    const layoutPresets = {
+      absolute: { bottom: 0, left: 0, position: 'absolute', right: 0, top: 0 },
+      centered: { alignSelf: 'center' },
+      fixed: { position: 'absolute' },
+      full: { flex: 1 },
+      landing: { alignItems: 'center', flex: 1, justifyContent: 'center' }
+    };
+
+    const viewStyles = {
+      ...layoutPresets[absolute && 'absolute'],
+      ...layoutPresets[centered && 'centered'],
+      ...layoutPresets[fixed && 'fixed'],
+      ...layoutPresets[full && 'full'],
+      ...layoutPresets[landing && 'landing'],
+      ...rest
+    };
 
     const inputRange =
       indices ||
-      Array(states.length)
+      Array(state.length)
         .fill()
         .map((_, index) => index);
 
+    if (inputRange.length === 1) {
+      inputRange.push(1);
+      state.push({});
+    }
+
     const getRange = (prop, defaultValue) =>
-      states.reduce((range, state, i) => {
-        const prevState = range[i - 1];
+      state.reduce((range, currentState, index) => {
+        const prevState = range[index - 1];
 
         range.push(
-          state[prop] || state[prop] === 0
-            ? state[prop]
+          currentState[prop] || currentState[prop] === 0
+            ? currentState[prop]
             : prevState || prevState === 0
               ? prevState
               : style[prop] || style[prop] === 0
@@ -91,17 +150,17 @@ export default class Behavior extends React.PureComponent {
       }, []);
 
     const addNativeProp = (prop, defaultValue) =>
-      nativeValue.interpolate({
+      nativeDriver.interpolate({
         inputRange,
         outputRange: getRange(prop, defaultValue),
-        extrapolate: clamp ? 'clamp' : null
+        extrapolate: clamp ? 'clamp' : undefined
       });
 
     const addProp = (prop, defaultValue) =>
-      value.interpolate({
+      driver.interpolate({
         inputRange,
         outputRange: getRange(prop, defaultValue),
-        extrapolate: clamp ? 'clamp' : null
+        extrapolate: clamp ? 'clamp' : undefined
       });
 
     const opacity = addNativeProp('opacity', 1);
@@ -135,8 +194,8 @@ export default class Behavior extends React.PureComponent {
     const styles = { backgroundColor, height, width };
 
     if (initialState) {
-      nativeValue.setValue(initialState);
-      value.setValue(initialState);
+      nativeDriver.setValue(initialState);
+      driver.setValue(initialState);
     }
 
     if (enableGestures) {
@@ -186,11 +245,11 @@ export default class Behavior extends React.PureComponent {
       });
     }
 
-    const NativeBehavior = props => (
-      <Animated.View style={[style, nativeStyles]} {...props} />
+    const NativeBehaviorView = props => (
+      <Animated.View style={[style, viewStyles, nativeStyles]} {...props} />
     );
 
-    const Behavior = props => <Animated.View style={styles} {...props} />;
+    const BehaviorView = props => <Animated.View style={styles} {...props} />;
 
     const Touchable = props => (
       <TouchableOpacity
@@ -203,18 +262,18 @@ export default class Behavior extends React.PureComponent {
 
     if (enableGestures) {
       return (
-        <NativeBehavior {...this.pan.panHandlers}>
+        <NativeBehaviorView {...this.pan.panHandlers}>
           <Touchable>
             <Behavior>{children}</Behavior>
           </Touchable>
-        </NativeBehavior>
+        </NativeBehaviorView>
       );
     }
 
     return (
-      <NativeBehavior>
-        <Behavior>{children}</Behavior>
-      </NativeBehavior>
+      <NativeBehaviorView>
+        <BehaviorView>{children}</BehaviorView>
+      </NativeBehaviorView>
     );
   }
 }

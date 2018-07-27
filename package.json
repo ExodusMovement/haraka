@@ -1,14 +1,40 @@
 {
   "license": "MIT",
-  "name": "react-native-behavior",
+  "name": "haraka",
   "description": "Stateful animations in React Native.",
-  "version": "0.0.19",
-  "main": "behavior.js",
+  "version": "0.0.20",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sonaye/react-native-behavior.git"
+    "url": "git+https://github.com/sonaye/haraka.git"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "devDependencies": {
+    "@types/react": "16.4.7",
+    "@types/react-native": "0.56.4",
+    "babel-core": "6.26.3",
+    "babel-eslint": "8.2.6",
+    "babel-plugin-external-helpers": "6.22.0",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-react": "6.24.1",
+    "babel-preset-stage-0": "6.24.1",
+    "eslint": "~4",
+    "eslint-config-airbnb": "17.0.0",
+    "eslint-plugin-import": "2.13.0",
+    "eslint-plugin-jsx-a11y": "6.1.1",
+    "eslint-plugin-react": "7.10.0",
+    "rollup": "0.63.4",
+    "rollup-plugin-babel": "3.0.7"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "prebuild": "rm -rf lib",
+    "build": "rollup -c"
   },
   "files": [
-    "behavior.js"
+    "lib"
   ]
 }
