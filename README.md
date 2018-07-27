@@ -46,44 +46,65 @@ yarn add haraka
 
 ```js
 type behavior = {
-  config?: { // goTo() default configuration
+  config?: {
+    // goTo() default configuration
     mode?: 'spring' | 'timing', // default = 'spring'
-    callback?: Function, // to be executed after animating to a new state
+    callback?: func, // to be executed after animating to a new state
     ...AnimatedSpringOptions, // excluding toValue, useNativeDriver (see React Native docs)
     ...AnimatedTimingOptions // excluding toValue, useNativeDriver (see React Native docs)
   },
-  initialState?: number, // default = 0
   state?: Array<{
     backgroundColor?: string, // default = 'transparent'
     height?: number, // no percentages, default = null
     opacity?: number, // [0, 1], default = 1
     rotate?: string, // e.g. '45deg', default = '0deg'
-    scale?: number, // default = 1
-    translateX?: number, // default = 0
-    translateY?: number, // default = 0
-    width?: number, // no percentages, default = null
     rotateX?: string, // e.g. '45deg', default = '0deg'
     rotateY?: string, // e.g. '45deg', default = '0deg'
+    scale?: number, // default = 1
     scaleX?: number, // default = 1
     scaleY?: number, // default = 1
+    translateX?: number, // default = 0
+    translateY?: number, // default = 0
+    width?: number // no percentages, default = null
   }>, // default value is [{}, {}]
-  style?: Object, // default = {}, AnimatedViewStyle (see React Native docs)
-  enableGestures?: boolean, // simple swipe up/down/left/right and pressed/long pressed
-  onGesture?: Function, // e.g. gesture => console.log(gesture)
-  indices?: Array<number>, // can be used with custom drivers to define custom state keys/values
-  clamp?: boolean, // default = false, prevent animations from exceeding their ranges
-  swipeVelocityThreshold?: number, // default = 0.3
-  swipeDistanceThreshold?: number, // default = 10
   nativeDriver?: AnimatedValue, // default = new Animated.Value(0), use a custom native driver
   driver?: AnimatedValue, // default = new Animated.Value(0), use a custom driver
   // nativeDriver and driver props should be used together, different instances of Animated.Value
   // nativeDriver prop is needed for opacity, rotate, scale and translate
   // driver prop is needed for backgroundColor, height and width
-  children?: any // the behavior component can enclose other components, can enclose another behavior too
+  children?: any, // the behavior component can enclose other components, can enclose another behavior too
+  clamp?: boolean, // default = false, prevent animations from exceeding their ranges
+  enableGestures?: boolean, // simple swipe up/down/left/right and pressed/long pressed
+  indices?: number[], // can be used with custom drivers to define custom state keys/values
+  initialState?: number, // default = 0
+  onGesture?: func, // e.g. gesture => console.log(gesture)
+  style?: object, // default = {}, AnimatedViewStyle (see React Native docs)
+  swipeDistanceThreshold?: number, // default = 10
+  swipeVelocityThreshold?: number, // default = 0.3
+  faded?: bool, // see below for available presets (pass the key)
+  absolute?: bool, // see below for available presets (pass the key)
+  centered?: bool, // see below for available presets (pass the key)
+  fixed?: bool, // see below for available presets (pass the key)
+  full?: bool, // see below for available presets (pass the key)
+  landing?: bool, // see below for available presets (pass the key)
+};
+
+// animation presets
+const presets = {
+  faded: [{ opacity: 0 }, { opacity: 1 }]
+};
+
+// layout presets
+const layoutPresets = {
+  absolute: { bottom: 0, left: 0, position: 'absolute', right: 0, top: 0 },
+  centered: { alignSelf: 'center' },
+  fixed: { position: 'absolute' },
+  full: { flex: 1 },
+  landing: { alignItems: 'center', flex: 1, justifyContent: 'center' }
 };
 
 // methods
-behavior.goTo(index: number | Array<number>, config?: Object = {}) // animate to a specific behavior state
+behavior.goTo(index: number | number[], config?: Object = {}) // animate to a specific behavior state
 
 behavior.index // to retrieve current state index
 ```

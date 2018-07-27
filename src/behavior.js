@@ -60,21 +60,56 @@ export default class Behavior extends React.PureComponent {
     const { nativeDriver, driver } = this;
 
     const {
+      driver: _driver,
+      nativeDriver: _nativeDriver,
+      state: _state,
+      // ..
       children,
       clamp,
       config,
-      driver: _driver,
       enableGestures,
       indices,
       initialState,
-      nativeDriver: _nativeDriver,
       onGesture,
-      state,
       style,
       swipeDistanceThreshold,
       swipeVelocityThreshold,
-      ...viewStyles
+      // ..
+      faded,
+      // ..
+      absolute,
+      centered,
+      fixed,
+      full,
+      landing,
+      // ..
+      ...rest
     } = this.props;
+
+    let { state } = this.props;
+
+    const presets = {
+      faded: [{ opacity: 0 }, { opacity: 1 }]
+    };
+
+    if (faded) state = presets.faded;
+
+    const layoutPresets = {
+      absolute: { bottom: 0, left: 0, position: 'absolute', right: 0, top: 0 },
+      centered: { alignSelf: 'center' },
+      fixed: { position: 'absolute' },
+      full: { flex: 1 },
+      landing: { alignItems: 'center', flex: 1, justifyContent: 'center' }
+    };
+
+    const viewStyles = {
+      ...layoutPresets[absolute && 'absolute'],
+      ...layoutPresets[centered && 'centered'],
+      ...layoutPresets[fixed && 'fixed'],
+      ...layoutPresets[full && 'full'],
+      ...layoutPresets[landing && 'landing'],
+      ...rest
+    };
 
     const inputRange =
       indices ||
