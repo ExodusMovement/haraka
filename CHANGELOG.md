@@ -1,6 +1,7 @@
 # 0.0.20
 
 - **Breaking**: Project has been renamed to `haraka`.
+- **Breaking**: `animatedNativeValue` and `animatedValue` props are now `nativeDriver` and `driver`.
 - Use Rollup to bundle the package.
 
 # 0.0.19

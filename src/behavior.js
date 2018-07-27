@@ -3,8 +3,8 @@ import React from 'react';
 import { Animated, PanResponder, TouchableOpacity } from 'react-native';
 
 export default class Behavior extends React.PureComponent {
-  nativeValue = this.props.animatedNativeValue || new Animated.Value(0);
-  value = this.props.animatedValue || new Animated.Value(0);
+  nativeDriver = this.props.nativeDriver || new Animated.Value(0);
+  driver = this.props.driver || new Animated.Value(0);
 
   index = this.props.initialState;
 
@@ -28,8 +28,12 @@ export default class Behavior extends React.PureComponent {
 
     const animate = toValue =>
       Animated.parallel([
-        curve(this.nativeValue, { ...options, toValue, useNativeDriver: true }),
-        curve(this.value, { ...options, toValue })
+        curve(this.nativeDriver, {
+          ...options,
+          toValue,
+          useNativeDriver: true
+        }),
+        curve(this.driver, { ...options, toValue })
       ]);
 
     if (Array.isArray(value)) {
@@ -52,7 +56,7 @@ export default class Behavior extends React.PureComponent {
   };
 
   render() {
-    const { nativeValue, value } = this;
+    const { nativeDriver, driver } = this;
 
     const {
       children,
@@ -91,14 +95,14 @@ export default class Behavior extends React.PureComponent {
       }, []);
 
     const addNativeProp = (prop, defaultValue) =>
-      nativeValue.interpolate({
+      nativeDriver.interpolate({
         inputRange,
         outputRange: getRange(prop, defaultValue),
         extrapolate: clamp ? 'clamp' : null
       });
 
     const addProp = (prop, defaultValue) =>
-      value.interpolate({
+      driver.interpolate({
         inputRange,
         outputRange: getRange(prop, defaultValue),
         extrapolate: clamp ? 'clamp' : null
@@ -135,8 +139,8 @@ export default class Behavior extends React.PureComponent {
     const styles = { backgroundColor, height, width };
 
     if (initialState) {
-      nativeValue.setValue(initialState);
-      value.setValue(initialState);
+      nativeDriver.setValue(initialState);
+      driver.setValue(initialState);
     }
 
     if (enableGestures) {
@@ -186,11 +190,11 @@ export default class Behavior extends React.PureComponent {
       });
     }
 
-    const NativeBehavior = props => (
+    const NativeBehaviorView = props => (
       <Animated.View style={[style, nativeStyles]} {...props} />
     );
 
-    const Behavior = props => <Animated.View style={styles} {...props} />;
+    const BehaviorView = props => <Animated.View style={styles} {...props} />;
 
     const Touchable = props => (
       <TouchableOpacity
@@ -203,18 +207,18 @@ export default class Behavior extends React.PureComponent {
 
     if (enableGestures) {
       return (
-        <NativeBehavior {...this.pan.panHandlers}>
+        <NativeBehaviorView {...this.pan.panHandlers}>
           <Touchable>
             <Behavior>{children}</Behavior>
           </Touchable>
-        </NativeBehavior>
+        </NativeBehaviorView>
       );
     }
 
     return (
-      <NativeBehavior>
-        <Behavior>{children}</Behavior>
-      </NativeBehavior>
+      <NativeBehaviorView>
+        <BehaviorView>{children}</BehaviorView>
+      </NativeBehaviorView>
     );
   }
 }

@@ -8,9 +8,15 @@ You define the behavior states of the component, and then animate between them.
 
 <img src="examples/demos/demo1.gif" width="400">
 
-```javascript
+## Usage
+
+```js
+import Behavior from 'haraka';
+
+box = React.createRef();
+
 <Behavior
-  ref={ref => (this.box = ref)}
+  ref={this.box}
   states={[
     { backgroundColor: 'gray' }, // state 0
     { backgroundColor: 'green' }, // state 1
@@ -21,11 +27,11 @@ You define the behavior states of the component, and then animate between them.
 
 // ..
 
-this.box.goTo(1); // animates box's backgroundColor from gray to green
-this.box.goTo(2); // animates the opacity of the -now- green box from 1 to 0.5
-this.box.goTo(3); // rotates the faded green box 45 degrees, starting from 0
+this.box.current.goTo(1); // animates box's backgroundColor from gray to green
+this.box.current.goTo(2); // animates the opacity of the -now- green box from 1 to 0.5
+this.box.current.goTo(3); // rotates the faded green box 45 degrees, starting from 0
 
-this.box.goTo([1, 2, 3]); // plays a sequence of behavior states, colorize then fade then tilt
+this.box.current.goTo([1, 2, 3]); // plays a sequence of behavior states, colorize then fade then tilt
 ```
 
 More demos available [here](/examples/demos) ([source](/examples)).
@@ -38,7 +44,7 @@ yarn add haraka
 
 # Definition
 
-```javascript
+```js
 type behavior = {
   config?: { // goTo() default configuration
     mode?: 'spring' | 'timing', // default = 'spring'
@@ -68,11 +74,11 @@ type behavior = {
   clamp?: boolean, // default = false, prevent animations from exceeding their ranges
   swipeVelocityThreshold?: number, // default = 0.3
   swipeDistanceThreshold?: number, // default = 10
-  animatedNativeValue?: AnimatedValue, // default = new Animated.Value(0), use a custom native driver
-  animatedValue?: AnimatedValue, // default = new Animated.Value(0), use a custom driver
-  // animatedNativeValue and animatedValue should be used together, different instances of Animated.Value
-  // animatedNativeValue is needed for opacity, rotate, scale, translateX and translateY
-  // animatedValue is needed for backgroundColor, height and width
+  nativeDriver?: AnimatedValue, // default = new Animated.Value(0), use a custom native driver
+  driver?: AnimatedValue, // default = new Animated.Value(0), use a custom driver
+  // nativeDriver and driver props should be used together, different instances of Animated.Value
+  // nativeDriver prop is needed for opacity, rotate, scale and translate
+  // driver prop is needed for backgroundColor, height and width
   children?: any // the behavior component can enclose other components, can enclose another behavior too
 };
 
