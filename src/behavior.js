@@ -9,13 +9,14 @@ export default class Behavior extends React.PureComponent {
   index = this.props.initialState;
 
   static defaultProps = {
-    config: { mode: 'spring' },
-    initialState: 0,
-    style: {},
-    enableGestures: false,
     clamp: false,
-    swipeVelocityThreshold: 0.3,
-    swipeDistanceThreshold: 10
+    config: { mode: 'spring' },
+    enableGestures: false,
+    initialState: 0,
+    state: [{}, {}],
+    style: {},
+    swipeDistanceThreshold: 10,
+    swipeVelocityThreshold: 0.3
   };
 
   goTo = (value, config = {}) => {
@@ -61,14 +62,17 @@ export default class Behavior extends React.PureComponent {
     const {
       children,
       clamp,
+      config,
+      driver: _driver,
       enableGestures,
       indices,
       initialState,
+      nativeDriver: _nativeDriver,
       onGesture,
       state,
       style,
-      swipeVelocityThreshold,
       swipeDistanceThreshold,
+      swipeVelocityThreshold,
       ...viewStyles
     } = this.props;
 
@@ -77,6 +81,11 @@ export default class Behavior extends React.PureComponent {
       Array(state.length)
         .fill()
         .map((_, index) => index);
+
+    if (inputRange.length === 1) {
+      inputRange.push(1);
+      state.push({});
+    }
 
     const getRange = (prop, defaultValue) =>
       state.reduce((range, currentState, index) => {

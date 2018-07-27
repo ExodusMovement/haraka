@@ -53,7 +53,7 @@ type behavior = {
     ...AnimatedTimingOptions // excluding toValue, useNativeDriver (see React Native docs)
   },
   initialState?: number, // default = 0
-  state: Array<{
+  state?: Array<{
     backgroundColor?: string, // default = 'transparent'
     height?: number, // no percentages, default = null
     opacity?: number, // [0, 1], default = 1
@@ -66,7 +66,7 @@ type behavior = {
     rotateY?: string, // e.g. '45deg', default = '0deg'
     scaleX?: number, // default = 1
     scaleY?: number, // default = 1
-  }>, // minimum two states required
+  }>, // default value is [{}, {}]
   style?: Object, // default = {}, AnimatedViewStyle (see React Native docs)
   enableGestures?: boolean, // simple swipe up/down/left/right and pressed/long pressed
   onGesture?: Function, // e.g. gesture => console.log(gesture)

@@ -3,6 +3,8 @@
 - **Breaking**: Project has been renamed to `haraka`.
 - **Breaking**: `animatedNativeValue` and `animatedValue` props are now `nativeDriver` and `driver`.
 - **Breaking**: `states` props is now just `state`.
+- State can now be undefined, it will not throw if not passed, the default value is `[{}, {}]`. It will still throw however if you passe an empty array `state={[]}` use `state={undefined}` instead if you want to do this.
+- State can now be static `state=[{ /* config */ }]` by passing a single state.
 
 - You can now style the behavior view directly from the props (you still have the option to use the `style` prop too), any additional props are passed to the style object of the view, additional props are style overrides.
 
