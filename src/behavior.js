@@ -20,8 +20,10 @@ export default class Behavior extends React.PureComponent {
   };
 
   goTo = (value, config = {}) => {
+    const { config: defaultConfig } = this.props;
+
     const { mode, callback, ...options } = {
-      ...this.props.config,
+      ...defaultConfig,
       ...config
     };
 
@@ -143,14 +145,14 @@ export default class Behavior extends React.PureComponent {
       nativeDriver.interpolate({
         inputRange,
         outputRange: getRange(prop, defaultValue),
-        extrapolate: clamp ? 'clamp' : null
+        extrapolate: clamp ? 'clamp' : undefined
       });
 
     const addProp = (prop, defaultValue) =>
       driver.interpolate({
         inputRange,
         outputRange: getRange(prop, defaultValue),
-        extrapolate: clamp ? 'clamp' : null
+        extrapolate: clamp ? 'clamp' : undefined
       });
 
     const opacity = addNativeProp('opacity', 1);
