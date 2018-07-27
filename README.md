@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/haraka.svg)](https://badge.fury.io/js/haraka)
 
-<img src="qaf.svg" alt="Qaf logo" width="96">
+<img src="haraka.svg" alt="Haraka logo" width="128">
 
 You define the behavior states of the component, and then animate between them.
 
@@ -28,7 +28,7 @@ this.box.goTo(3); // rotates the faded green box 45 degrees, starting from 0
 this.box.goTo([1, 2, 3]); // plays a sequence of behavior states, colorize then fade then tilt
 ```
 
-More demos available [here](/examples/demos).
+More demos available [here](/examples/demos) ([source](/examples)).
 
 # Install
 
@@ -81,7 +81,3 @@ behavior.goTo(index: number | Array<number>, config?: Object = {}) // animate to
 
 behavior.index // to retrieve current state index
 ```
-
-## Examples
-
-Available [here](/examples).
