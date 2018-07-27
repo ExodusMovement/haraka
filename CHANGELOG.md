@@ -1,4 +1,4 @@
-# 0.0.20
+# 0.0.21
 
 - **Breaking**: Project has been renamed to `haraka`. You can continue to use [`react-native-behavior`](https://www.npmjs.com/package/react-native-behavior) if you are already using it in a project (has been stable for over a year), it will not reacive any future updates however and has been deprecated.
 - **Breaking**: `animatedNativeValue` prop is now `nativeDriver`.
@@ -16,6 +16,7 @@
 
 - You can now use an animation or a layout preset from the available presets, see [the definition](../../#definition) for options.
 - You can now get the animation reference instead of playing it immediately with the `ref` option in `goTo()` configuration. This can be useful for composing multiple behavior animations with `Animated.sequence` and `Animated.parallel`.
+- You can pass a `pointerEvents` prop to the behavior view.
 - Used Rollup to bundle the package.
 
 # 0.0.19

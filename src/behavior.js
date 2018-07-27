@@ -81,6 +81,7 @@ export default class Behavior extends React.PureComponent {
       indices,
       initialState,
       onGesture,
+      pointerEvents,
       style,
       swipeDistanceThreshold,
       swipeVelocityThreshold,
@@ -262,7 +263,7 @@ export default class Behavior extends React.PureComponent {
 
     if (enableGestures) {
       return (
-        <NativeBehaviorView {...this.pan.panHandlers}>
+        <NativeBehaviorView {...this.pan.panHandlers} {...{ pointerEvents }}>
           <Touchable>
             <Behavior>{children}</Behavior>
           </Touchable>
@@ -271,7 +272,7 @@ export default class Behavior extends React.PureComponent {
     }
 
     return (
-      <NativeBehaviorView>
+      <NativeBehaviorView {...{ pointerEvents }}>
         <BehaviorView>{children}</BehaviorView>
       </NativeBehaviorView>
     );
