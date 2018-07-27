@@ -17,7 +17,7 @@ box = React.createRef();
 
 <Behavior
   ref={this.box}
-  states={[
+  state={[
     { backgroundColor: 'gray' }, // state 0
     { backgroundColor: 'green' }, // state 1
     { opacity: 0.5 }, // state 2
@@ -53,7 +53,7 @@ type behavior = {
     ...AnimatedTimingOptions // excluding toValue, useNativeDriver (see React Native docs)
   },
   initialState?: number, // default = 0
-  states: Array<{
+  state: Array<{
     backgroundColor?: string, // default = 'transparent'
     height?: number, // no percentages, default = null
     opacity?: number, // [0, 1], default = 1

@@ -37,15 +37,15 @@ export default class Behavior extends React.PureComponent {
       ]);
 
     if (Array.isArray(value)) {
-      const states = [];
+      const state = [];
 
-      value.forEach(toValue => states.push(animate(toValue)));
+      value.forEach(toValue => state.push(animate(toValue)));
 
-      Animated.sequence(states).start(animation => {
+      Animated.sequence(state).start(animation => {
         if (animation.finished && callback) callback();
       });
 
-      this.index = states[states.length - 1];
+      this.index = state[state.length - 1];
     } else {
       animate(value).start(animation => {
         if (animation.finished && callback) callback();
@@ -65,7 +65,7 @@ export default class Behavior extends React.PureComponent {
       indices,
       initialState,
       onGesture,
-      states,
+      state,
       style,
       swipeVelocityThreshold,
       swipeDistanceThreshold
@@ -73,17 +73,17 @@ export default class Behavior extends React.PureComponent {
 
     const inputRange =
       indices ||
-      Array(states.length)
+      Array(state.length)
         .fill()
         .map((_, index) => index);
 
     const getRange = (prop, defaultValue) =>
-      states.reduce((range, state, i) => {
-        const prevState = range[i - 1];
+      state.reduce((range, currentState, index) => {
+        const prevState = range[index - 1];
 
         range.push(
-          state[prop] || state[prop] === 0
-            ? state[prop]
+          currentState[prop] || currentState[prop] === 0
+            ? currentState[prop]
             : prevState || prevState === 0
               ? prevState
               : style[prop] || style[prop] === 0
