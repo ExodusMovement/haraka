@@ -68,7 +68,8 @@ export default class Behavior extends React.PureComponent {
       state,
       style,
       swipeVelocityThreshold,
-      swipeDistanceThreshold
+      swipeDistanceThreshold,
+      ...viewStyles
     } = this.props;
 
     const inputRange =
@@ -191,7 +192,7 @@ export default class Behavior extends React.PureComponent {
     }
 
     const NativeBehaviorView = props => (
-      <Animated.View style={[style, nativeStyles]} {...props} />
+      <Animated.View style={[style, viewStyles, nativeStyles]} {...props} />
     );
 
     const BehaviorView = props => <Animated.View style={styles} {...props} />;
