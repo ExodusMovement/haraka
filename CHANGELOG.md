@@ -1,6 +1,6 @@
 # 0.0.20
 
-- **Breaking**: Project has been renamed to `haraka`. You can continue to use `react-native-behavior` if you are already using it in a project (has been stable for over a year), it will not reacive any future updates however and has been depricated.
+- **Breaking**: Project has been renamed to `haraka`. You can continue to use `react-native-behavior` if you are already using it in a project (has been stable for over a year), it will not reacive any future updates however and has been deprecated.
 - **Breaking**: `animatedNativeValue` prop is now `nativeDriver`.
 - **Breaking**: `animatedValue` prop is now `driver`.
 - **Breaking**: `states` prop is now just `state` (without the s).
