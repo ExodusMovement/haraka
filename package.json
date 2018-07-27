@@ -8,6 +8,10 @@
     "type": "git",
     "url": "git+https://github.com/sonaye/haraka.git"
   },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
   "devDependencies": {
     "@types/react": "16.4.7",
     "@types/react-native": "0.56.4",

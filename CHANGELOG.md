@@ -1,6 +1,7 @@
 # 0.0.20
 
 - **Breaking**: Project has been renamed to `haraka`.
+- Use Rollup to bundle the package.
 
 # 0.0.19
 
