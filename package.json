@@ -9,6 +9,8 @@
     "url": "git+https://github.com/sonaye/haraka.git"
   },
   "devDependencies": {
+    "@types/react": "16.4.7",
+    "@types/react-native": "0.56.4",
     "babel-core": "6.26.3",
     "babel-eslint": "8.2.6",
     "babel-plugin-external-helpers": "6.22.0",
