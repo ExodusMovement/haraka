@@ -36,6 +36,8 @@ this.box.current.goTo([1, 2, 3]); // plays a sequence of behavior states, colori
 
 More demos available [here](/examples/demos) ([source](/examples)).
 
+**NOTE:** The examples are currently outdaed, please take a look at the release notes [here](/CHANGELOG.md).
+
 # Install
 
 ```bash
