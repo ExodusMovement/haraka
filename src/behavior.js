@@ -20,7 +20,7 @@ export default class Behavior extends React.PureComponent {
     this.nativeDriver = nativeDriver || new Animated.Value(initialState);
     this.driver = driver || new Animated.Value(initialState);
 
-    this.index = initialState;
+    this.key = initialState;
 
     this.state = { mounted: !unmounted };
   }
@@ -61,7 +61,7 @@ export default class Behavior extends React.PureComponent {
 
       state.forEach(toValue => sequence.push(animate(toValue)));
 
-      this.index = sequence[sequence.length - 1];
+      this.key = sequence[sequence.length - 1];
 
       const animationRef = Animated.sequence(sequence);
 
@@ -73,7 +73,7 @@ export default class Behavior extends React.PureComponent {
       });
     }
 
-    this.index = state;
+    this.key = state;
 
     const animationRef = animate(state);
 
@@ -179,11 +179,7 @@ export default class Behavior extends React.PureComponent {
 
     const opacity = addNativeProp('opacity', 1);
     const rotate = addNativeProp('rotate', '0deg');
-    const rotateX = addNativeProp('rotateX', '0deg');
-    const rotateY = addNativeProp('rotateY', '0deg');
     const scale = addNativeProp('scale', 1);
-    const scaleX = addNativeProp('scaleX', 1);
-    const scaleY = addNativeProp('scaleY', 1);
     const translateX = addNativeProp('translateX', 0);
     const translateY = addNativeProp('translateY', 0);
 
@@ -193,16 +189,7 @@ export default class Behavior extends React.PureComponent {
 
     const nativeStyles = {
       opacity,
-      transform: [
-        { rotate },
-        { rotateX },
-        { rotateY },
-        { scale },
-        { scaleX },
-        { scaleY },
-        { translateX },
-        { translateY }
-      ]
+      transform: [{ rotate }, { scale }, { translateX }, { translateY }]
     };
 
     const styles = { backgroundColor, height, width };

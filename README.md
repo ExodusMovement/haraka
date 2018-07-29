@@ -59,11 +59,7 @@ type State = {
   height?: number, // no percentages, default = null
   opacity?: number, // [0, 1], default = 1
   rotate?: string, // e.g. '45deg', default = '0deg'
-  rotateX?: string, // e.g. '45deg', default = '0deg'
-  rotateY?: string, // e.g. '45deg', default = '0deg'
   scale?: number, // default = 1
-  scaleX?: number, // default = 1
-  scaleY?: number, // default = 1
   translateX?: number, // default = 0
   translateY?: number, // default = 0
   width?: number // no percentages, default = null
@@ -114,7 +110,7 @@ behavior.unmount() // useful for removing components that are hidden after anima
 behavior.mount(state: ?number) // useful for animations that start in a hidden state
 // use along with `unmounted` prop and `mount()`
 
-behavior.index // to retrieve current state key
+behavior.key // to retrieve current state key
 ```
 
 ## Examples

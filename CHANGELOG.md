@@ -1,7 +1,9 @@
-# 0.0.22
+# 0.0.25
 
 - **Breaking**: Drop simple gestures recognition. Use a tool like `react-native-gesture-handler` instead.
 - **Breaking**: Renamed `indices` prop to `keys`.
+- **Breaking**: Use `behavior.key` to retrieve current state index (now named `key`).
+- **Breaking**: Drop support for `rotateX`, `rotateY`, `scaleX` and `scaleY` state props, which were introduced only recently, to enhance performance. You can still use them through the `style` prop and a custom driver.
 - Add `unmount()` and `mount(state?: number)` methods. Useful for removing components that are hidden after animation.
 - Add `onStart` event to `goTo()` options.
 - Add `unmounted` prop. Useful for animations that start in a hidden state. Use `mount()` to mount the component first then animate it.
