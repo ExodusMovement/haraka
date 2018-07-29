@@ -11,6 +11,7 @@
     "no-nested-ternary": 0,
     "object-curly-newline": 0,
     "operator-linebreak": 0,
+    "react/jsx-closing-bracket-location": 0,
     "react/jsx-filename-extension": 0,
     "react/jsx-one-expression-per-line": 0,
     "react/prop-types": [2, { "skipUndeclared": true }],
