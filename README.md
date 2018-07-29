@@ -81,6 +81,7 @@ type Behavior = {
   keys?: number[], // can be used with custom drivers to define custom state keys/indices
   initialState?: number, // default = 0
   style?: object, // style of the behavior view, default = {}, AnimatedViewStyle (see React Native docs)
+  unmounted?: bool, // default = false, start behavior in the unmounted state
   // animation presets (they populate `state` prop which will be ignored):
   faded?: bool, // default = false, see below for available presets
   // layout presets (they populate `style` prop):
