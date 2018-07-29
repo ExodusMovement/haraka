@@ -8,13 +8,33 @@ export default class Behavior extends React.PureComponent {
     config: { type: 'spring' },
     initialState: 0,
     state: [{}, {}],
-    style: {}
+    style: {},
+    unmounted: false
   };
 
-  nativeDriver = this.props.nativeDriver || new Animated.Value(0);
-  driver = this.props.driver || new Animated.Value(0);
+  constructor(props) {
+    super(props);
 
-  index = this.props.initialState;
+    const { initialState, nativeDriver, driver, unmounted } = this.props;
+
+    this.nativeDriver = nativeDriver || new Animated.Value(initialState);
+    this.driver = driver || new Animated.Value(initialState);
+
+    this.index = initialState;
+
+    this.state = { mounted: !unmounted };
+  }
+
+  unmount = () => this.setState({ mounted: false });
+
+  mount = state => {
+    const { initialState } = this.props;
+
+    this.nativeDriver.setValue(state || initialState);
+    this.driver.setValue(state || initialState);
+
+    this.setState({ mounted: true });
+  };
 
   goTo = (state, config = {}) => {
     const { config: defaultConfig } = this.props;
@@ -77,6 +97,10 @@ export default class Behavior extends React.PureComponent {
   };
 
   render() {
+    const { mounted } = this.state;
+
+    if (!mounted) return null;
+
     const {
       absolute,
       centered,
@@ -94,15 +118,11 @@ export default class Behavior extends React.PureComponent {
       pointerEvents,
       state: _state,
       style,
+      unmounted,
       ...rest
     } = this.props;
 
     let { state } = this.props;
-
-    if (initialState) {
-      this.nativeDriver.setValue(initialState);
-      this.driver.setValue(initialState);
-    }
 
     if (faded) state = this.presets.faded;
 
