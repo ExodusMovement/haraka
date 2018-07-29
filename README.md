@@ -76,7 +76,7 @@ type Behavior = {
   driver?: AnimatedValue, // default = new Animated.Value(0), you can use a custom driver
   // nativeDriver prop is used for opacity, rotate, scale and translate (native animations)
   // driver prop is used for backgroundColor, height and width (js animations)
-  children?: any, // behavior component can enclose other components, can enclose another behavior(s) too
+  children?: any, // behavior component can enclose other components or enclose another behavior(s)
   clamp?: bool, // default = false, prevent animations from exceeding their ranges
   keys?: number[], // can be used with custom drivers to define custom state keys/indices
   initialState?: number, // default = 0
