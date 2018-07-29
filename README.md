@@ -113,4 +113,4 @@ behavior.index // to retrieve current state index
 
 ## Examples
 
-Available ([here](/examples)).
+Available [here](/examples).
