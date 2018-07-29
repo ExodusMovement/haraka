@@ -208,7 +208,9 @@ export default class Behavior extends React.PureComponent {
     const styles = { backgroundColor, height, width };
 
     return (
-      <Animated.View style={[style, viewStyles, nativeStyles]}>
+      <Animated.View
+        style={[style, viewStyles, nativeStyles]}
+        {...{ pointerEvents }}>
         <Animated.View style={styles}>{children}</Animated.View>
       </Animated.View>
     );
