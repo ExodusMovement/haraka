@@ -16,45 +16,46 @@ export default class Behavior extends React.PureComponent {
     style: {}
   };
 
-  goTo = (value, config = {}) => {
+  goTo = (state, config = {}) => {
     const { config: defaultConfig } = this.props;
 
-    const { type, onComplete, ref, ...options } = {
+    const { type, onStart, onComplete, ref, ...opts } = {
       ...defaultConfig,
       ...config
     };
 
-    const curve = type === 'timing' ? Animated.timing : Animated.spring;
+    const engine = type === 'timing' ? Animated.timing : Animated.spring;
 
     const animate = toValue =>
       Animated.parallel([
-        curve(this.nativeDriver, {
-          ...options,
+        engine(this.nativeDriver, {
+          ...opts,
           toValue,
           useNativeDriver: true
         }),
-        curve(this.driver, { ...options, toValue })
+        engine(this.driver, { ...opts, toValue })
       ]);
 
-    if (Array.isArray(value)) {
-      const state = [];
+    if (Array.isArray(state)) {
+      const sequence = [];
 
-      value.forEach(toValue => state.push(animate(toValue)));
+      state.forEach(toValue => sequence.push(animate(toValue)));
 
-      this.index = state[state.length - 1];
+      this.index = sequence[sequence.length - 1];
 
-      const animationRef = Animated.sequence(state);
+      const animationRef = Animated.sequence(sequence);
 
       if (ref) return animationRef;
 
       return animationRef.start(animation => {
+        if (onStart) onStart();
         if (animation.finished && onComplete) onComplete();
       });
     }
 
-    this.index = value;
+    this.index = state;
 
-    const animationRef = animate(value);
+    const animationRef = animate(state);
 
     if (ref) return animationRef;
 
@@ -64,29 +65,23 @@ export default class Behavior extends React.PureComponent {
   };
 
   render() {
-    const { nativeDriver, driver } = this;
-
     const {
-      driver: _driver,
-      nativeDriver: _nativeDriver,
-      state: _state,
-      // ..
+      absolute,
+      centered,
       children,
       clamp,
       config,
-      initialState,
-      keys,
-      pointerEvents,
-      style,
-      // ..
+      driver,
       faded,
-      // ..
-      absolute,
-      centered,
       fixed,
       full,
+      initialState,
+      keys,
       landing,
-      // ..
+      nativeDriver,
+      pointerEvents,
+      state: _state,
+      style,
       ...rest
     } = this.props;
 
@@ -144,14 +139,14 @@ export default class Behavior extends React.PureComponent {
       }, []);
 
     const addNativeProp = (prop, defaultValue) =>
-      nativeDriver.interpolate({
+      this.nativeDriver.interpolate({
         inputRange,
         outputRange: getRange(prop, defaultValue),
         extrapolate: clamp ? 'clamp' : undefined
       });
 
     const addProp = (prop, defaultValue) =>
-      driver.interpolate({
+      this.driver.interpolate({
         inputRange,
         outputRange: getRange(prop, defaultValue),
         extrapolate: clamp ? 'clamp' : undefined
@@ -188,8 +183,8 @@ export default class Behavior extends React.PureComponent {
     const styles = { backgroundColor, height, width };
 
     if (initialState) {
-      nativeDriver.setValue(initialState);
-      driver.setValue(initialState);
+      this.nativeDriver.setValue(initialState);
+      this.driver.setValue(initialState);
     }
 
     return (
