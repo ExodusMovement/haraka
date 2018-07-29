@@ -106,7 +106,8 @@ const layoutPresets = {
 };
 
 // methods
-behavior.goTo(index: number | number[], config?: DefaultConfig = {}) // animate to a specific behavior state
+// animate to a specific behavior state
+behavior.goTo(index: number | number[], config?: DefaultConfig = {})
 
 behavior.unmount() // useful for removing components that are hidden after animation
 behavior.mount(state: ?number) // useful for animations that start in a hidden state
