@@ -76,7 +76,7 @@ type behavior = {
   children?: any, // the behavior component can enclose other components, can enclose another behavior too
   clamp?: boolean, // default = false, prevent animations from exceeding their ranges
   enableGestures?: boolean, // simple swipe up/down/left/right and pressed/long pressed
-  indices?: number[], // can be used with custom drivers to define custom state keys/values
+  keys?: number[], // can be used with custom drivers to define custom state keys/values
   initialState?: number, // default = 0
   onGesture?: func, // e.g. gesture => console.log(gesture)
   style?: object, // default = {}, AnimatedViewStyle (see React Native docs)

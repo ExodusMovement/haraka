@@ -78,8 +78,8 @@ export default class Behavior extends React.PureComponent {
       clamp,
       config,
       enableGestures,
-      indices,
       initialState,
+      keys,
       onGesture,
       pointerEvents,
       style,
@@ -123,7 +123,7 @@ export default class Behavior extends React.PureComponent {
     };
 
     const inputRange =
-      indices ||
+      keys ||
       Array(state.length)
         .fill()
         .map((_, index) => index);

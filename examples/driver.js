@@ -18,7 +18,7 @@ const Driver = () => {
       <Behavior
         clamp
         driver={driver}
-        indices={[0, height * 0.5, height, height * 1.5]}
+        keys={[0, height * 0.5, height, height * 1.5]}
         state={[
           { backgroundColor: '#4285f4' },
           { backgroundColor: '#0f9d58' },
