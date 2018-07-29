@@ -1,41 +1,30 @@
 import React from 'react';
+
 import { Button, Dimensions, View } from 'react-native';
 
-import Behavior from '../behavior';
+import Behavior from '../src/behavior';
 
-const { height, width } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
-const Example = () => {
-  let goTo;
+const Container = () => {
+  const container = React.createRef();
+
+  const goTo = state => container.current.goTo(state);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <Behavior
         initialState={1}
-        ref={ref => (goTo = ref.goTo)}
-        states={[
+        ref={container}
+        state={[
           { backgroundColor: '#db4437', height: 60 },
           { backgroundColor: '#0f9d58', height: 260 },
-          { backgroundColor: '#4285f4', height: height - 20 }
+          { backgroundColor: '#4285f4', height }
         ]}
-        style={{
-          bottom: 0,
-          position: 'absolute',
-          width
-        }}
-        indices={[0, 1, 2]} // android only
+        style={styles.behavior}
       />
 
-      <View
-        style={{
-          backgroundColor: 'transparent',
-          bottom: 10,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          left: 0,
-          position: 'absolute',
-          right: 0
-        }}>
+      <View style={styles.actions}>
         <Button title="Close" color="#fff" onPress={() => goTo(0)} />
         <Button title="Open" color="#fff" onPress={() => goTo(1)} />
         <Button title="Expand" color="#fff" onPress={() => goTo(2)} />
@@ -44,4 +33,23 @@ const Example = () => {
   );
 };
 
-export default Example;
+const styles = {
+  container: { flex: 1 },
+  behavior: {
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    right: 0
+  },
+  actions: {
+    backgroundColor: 'transparent',
+    bottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    left: 0,
+    position: 'absolute',
+    right: 0
+  }
+};
+
+export default Container;

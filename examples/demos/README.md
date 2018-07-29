@@ -1,9 +1,0 @@
-<img src="/examples/demos/demo1.gif" width="400">
-<img src="/examples/demos/demo2.gif" width="400">
-<img src="/examples/demos/demo3.gif" width="400">
-<img src="/examples/demos/demo4.gif" width="400">
-<img src="/examples/demos/demo5.gif" width="400">
-<img src="/examples/demos/demo6.gif" width="400">
-<img src="/examples/demos/demo7.gif" width="400">
-<img src="/examples/demos/demo8.gif" width="400">
-<img src="/examples/demos/demo9.gif" width="400">

@@ -34,17 +34,13 @@ this.box.current.goTo(3); // rotates the faded green box 45 degrees, starting fr
 this.box.current.goTo([1, 2, 3]); // plays a sequence of behavior states, colorize then fade then tilt
 ```
 
-More demos available [here](/examples/demos) ([source](/examples)).
-
-**NOTE:** The examples are currently outdaed, please take a look at the release notes [here](/CHANGELOG.md).
-
-# Install
+## Install
 
 ```bash
 yarn add haraka
 ```
 
-# Definition
+## Definition
 
 ```js
 type behavior = {
@@ -113,3 +109,7 @@ behavior.goTo(index: number | number[], config?: Object = {}) // animate to a sp
 
 behavior.index // to retrieve current state index
 ```
+
+## Examples
+
+Available ([here](/examples)).
