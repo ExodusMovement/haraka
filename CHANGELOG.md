@@ -1,3 +1,11 @@
+# 0.0.22
+
+- **Breaking**: Drop simple gestures recognition. Use a tool like `react-native-gesture-handler` instead.
+- **Breaking**: Renamed `indices` prop to `keys`.
+- Add `unmount()` and `mount(state?: number)` methods. Useful for removing components that are hidden after animation.
+- Add `onStart` event to `goTo()` options.
+- Add `unmounted` prop. Useful for animations that start in a hidden state. Use `mount()` to mount the component first then animate it.
+
 # 0.0.21
 
 - **Breaking**: Project has been renamed to `haraka`. You can continue to use [`react-native-behavior`](https://www.npmjs.com/package/react-native-behavior) if you are already using it in a project (has been stable for over a year), it will not reacive any future updates however and has been deprecated.

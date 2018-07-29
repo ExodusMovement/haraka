@@ -47,10 +47,11 @@ type behavior = {
   config?: {
     // goTo() default configuration
     type?: 'spring' | 'timing', // default = 'spring'
-    onComplete?: func, // to be executed after animating to a new state
+    onComplete?: func, // to be executed once animation is started
+    onComplete?: func, // to be executed once animation is completed
     ref?: bool, // this will return the animation reference instead of playing it immediately
-    // can be useful for animating multiple behaviors with Animated.sequence and Animated.parallel
-    // onComplete is ignored when `ref` is enabled
+    // can be useful for animating multiple behaviors with `Animated.sequence()` and `Animated.parallel()`
+    // `onStart` and `onComplete `are ignored when `ref` is enabled
     ...AnimatedSpringOptions, // excluding toValue, useNativeDriver (see React Native docs)
     ...AnimatedTimingOptions // excluding toValue, useNativeDriver (see React Native docs)
   },
@@ -67,19 +68,19 @@ type behavior = {
     translateX?: number, // default = 0
     translateY?: number, // default = 0
     width?: number // no percentages, default = null
-  }>, // default value is [{}, {}]
+  }>, // default value is [{}, {}], [{}] can be used for a static behavior
   nativeDriver?: AnimatedValue, // default = new Animated.Value(0), use a custom native driver
   driver?: AnimatedValue, // default = new Animated.Value(0), use a custom driver
   // nativeDriver prop is used for opacity, rotate, scale and translate
   // driver prop is used for backgroundColor, height and width
   children?: any, // the behavior component can enclose other components, can enclose another behavior too
-  clamp?: boolean, // default = false, prevent animations from exceeding their ranges
+  clamp?: bool, // default = false, prevent animations from exceeding their ranges
   keys?: number[], // can be used with custom drivers to define custom state keys/values
   initialState?: number, // default = 0
-  style?: object, // default = {}, AnimatedViewStyle (see React Native docs)
-  // animation presets:
-  faded?: bool, // see below for available presets (pass the key)
-  // layout presets:
+  style?: object, // the style of the behavior view, default = {}, AnimatedViewStyle (see React Native docs)
+  // animation presets (they populate `state` prop):
+  faded?: bool, // , see below for available presets (pass the key)
+  // layout presets (they populate `style` prop, you can use multiple):
   absolute?: bool, // see below for available presets (pass the key)
   centered?: bool, // see below for available presets (pass the key)
   fixed?: bool, // see below for available presets (pass the key)
@@ -103,6 +104,9 @@ const layoutPresets = {
 
 // methods
 behavior.goTo(index: number | number[], config?: Object = {}) // animate to a specific behavior state
+
+behavior.unmount() // Useful for removing components that are hidden after animation
+behavior.mount(state: ?number) // Useful for animations that start in a hidden state, use along with `unmounted` prop and `mount()`
 
 behavior.index // to retrieve current state index
 ```
