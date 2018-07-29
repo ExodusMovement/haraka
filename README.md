@@ -43,7 +43,7 @@ yarn add haraka
 ## Definition
 
 ```js
-type defaultConfig = { // goTo() default configuration
+type DefaultConfig = { // goTo() default configuration
   type?: 'spring' | 'timing', // default = 'spring', `Animated.spring()` or `Animated.timing()`
   onStart?: func, // to be executed once animation is started, inside `.start()`
   onComplete?: func, // to be executed once animation is completed, inside `.start()`
@@ -69,8 +69,8 @@ type State = {
   width?: number // no percentages, default = null
 };
 
-type behavior = {
-  config?: defaultConfig,
+type Behavior = {
+  config?: DefaultConfig,
   state?: State[], // default value is [{}, {}], [{}] can be used for a static behavior
   nativeDriver?: AnimatedValue, // default = new Animated.Value(0), you can use a custom native driver
   driver?: AnimatedValue, // default = new Animated.Value(0), you can use a custom driver
@@ -80,7 +80,7 @@ type behavior = {
   clamp?: bool, // default = false, prevent animations from exceeding their ranges
   keys?: number[], // can be used with custom drivers to define custom state keys/indices
   initialState?: number, // default = 0
-  style?: object, // the style of the behavior view, default = {}, AnimatedViewStyle (see React Native docs)
+  style?: object, // style of the behavior view, default = {}, AnimatedViewStyle (see React Native docs)
   // animation presets (they populate `state` prop which will be ignored):
   faded?: bool, // default = false, see below for available presets
   // layout presets (they populate `style` prop):
@@ -106,10 +106,11 @@ const layoutPresets = {
 };
 
 // methods
-behavior.goTo(index: number | number[], config?: defaultConfig = {}) // animate to a specific behavior state
+behavior.goTo(index: number | number[], config?: DefaultConfig = {}) // animate to a specific behavior state
 
-behavior.unmount() // Useful for removing components that are hidden after animation
-behavior.mount(state: ?number) // Useful for animations that start in a hidden state, use along with `unmounted` prop and `mount()`
+behavior.unmount() // useful for removing components that are hidden after animation
+behavior.mount(state: ?number) // useful for animations that start in a hidden state
+// use along with `unmounted` prop and `mount()`
 
 behavior.index // to retrieve current state key
 ```
