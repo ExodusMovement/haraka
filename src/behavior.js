@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Animated, PanResponder, TouchableOpacity } from 'react-native';
+import { Animated } from 'react-native';
 
 export default class Behavior extends React.PureComponent {
   nativeDriver = this.props.nativeDriver || new Animated.Value(0);
@@ -11,12 +11,9 @@ export default class Behavior extends React.PureComponent {
   static defaultProps = {
     clamp: false,
     config: { type: 'spring' },
-    enableGestures: false,
     initialState: 0,
     state: [{}, {}],
-    style: {},
-    swipeDistanceThreshold: 10,
-    swipeVelocityThreshold: 0.3
+    style: {}
   };
 
   goTo = (value, config = {}) => {
@@ -77,14 +74,10 @@ export default class Behavior extends React.PureComponent {
       children,
       clamp,
       config,
-      enableGestures,
       initialState,
       keys,
-      onGesture,
       pointerEvents,
       style,
-      swipeDistanceThreshold,
-      swipeVelocityThreshold,
       // ..
       faded,
       // ..
@@ -199,82 +192,10 @@ export default class Behavior extends React.PureComponent {
       driver.setValue(initialState);
     }
 
-    if (enableGestures) {
-      let swiped;
-      let swipeVelocity = null;
-      let swipeDistance = null;
-
-      this.pan = PanResponder.create({
-        onMoveShouldSetPanResponder: e => e.nativeEvent.touches.length === 1,
-        onPanResponderMove: (e, { dx, dy, vx, vy }) => {
-          if (
-            Math.abs(vx) > swipeVelocityThreshold &&
-            Math.abs(dy) < swipeDistanceThreshold
-          ) {
-            swipeVelocity = vx;
-            swipeDistance = dx;
-
-            if (dx < 0) swiped = 'left';
-            else if (dx > 0) swiped = 'right';
-          } else if (
-            Math.abs(vy) > swipeVelocityThreshold &&
-            Math.abs(dx) < swipeDistanceThreshold
-          ) {
-            swipeVelocity = vy;
-            swipeDistance = dy;
-
-            if (dy < 0) swiped = 'up';
-            else if (dy > 0) swiped = 'down';
-          }
-        },
-        onPanResponderRelease: () => {
-          if (swiped && onGesture) {
-            onGesture({
-              swipedLeft: swiped === 'left',
-              swipedRight: swiped === 'right',
-              swipedUp: swiped === 'up',
-              swipedDown: swiped === 'down',
-              swipeVelocity,
-              swipeDistance
-            });
-
-            swiped = null;
-            swipeVelocity = null;
-            swipeDistance = null;
-          }
-        }
-      });
-    }
-
-    const NativeBehaviorView = props => (
-      <Animated.View style={[style, viewStyles, nativeStyles]} {...props} />
-    );
-
-    const BehaviorView = props => <Animated.View style={styles} {...props} />;
-
-    const Touchable = props => (
-      <TouchableOpacity
-        activeOpacity={1}
-        onLongPress={() => onGesture({ longPressed: true })}
-        onPress={() => onGesture({ pressed: true })}
-        {...props}
-      />
-    );
-
-    if (enableGestures) {
-      return (
-        <NativeBehaviorView {...this.pan.panHandlers} {...{ pointerEvents }}>
-          <Touchable>
-            <Behavior>{children}</Behavior>
-          </Touchable>
-        </NativeBehaviorView>
-      );
-    }
-
     return (
-      <NativeBehaviorView {...{ pointerEvents }}>
-        <BehaviorView>{children}</BehaviorView>
-      </NativeBehaviorView>
+      <Animated.View style={[style, viewStyles, nativeStyles]}>
+        <Animated.View style={styles}>{children}</Animated.View>
+      </Animated.View>
     );
   }
 }

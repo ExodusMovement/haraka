@@ -70,19 +70,16 @@ type behavior = {
   }>, // default value is [{}, {}]
   nativeDriver?: AnimatedValue, // default = new Animated.Value(0), use a custom native driver
   driver?: AnimatedValue, // default = new Animated.Value(0), use a custom driver
-  // nativeDriver and driver props should be used together, different instances of Animated.Value
-  // nativeDriver prop is needed for opacity, rotate, scale and translate
-  // driver prop is needed for backgroundColor, height and width
+  // nativeDriver prop is used for opacity, rotate, scale and translate
+  // driver prop is used for backgroundColor, height and width
   children?: any, // the behavior component can enclose other components, can enclose another behavior too
   clamp?: boolean, // default = false, prevent animations from exceeding their ranges
-  enableGestures?: boolean, // simple swipe up/down/left/right and pressed/long pressed
   keys?: number[], // can be used with custom drivers to define custom state keys/values
   initialState?: number, // default = 0
-  onGesture?: func, // e.g. gesture => console.log(gesture)
   style?: object, // default = {}, AnimatedViewStyle (see React Native docs)
-  swipeDistanceThreshold?: number, // default = 10
-  swipeVelocityThreshold?: number, // default = 0.3
+  // animation presets:
   faded?: bool, // see below for available presets (pass the key)
+  // layout presets:
   absolute?: bool, // see below for available presets (pass the key)
   centered?: bool, // see below for available presets (pass the key)
   fixed?: bool, // see below for available presets (pass the key)
