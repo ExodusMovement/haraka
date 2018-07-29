@@ -96,7 +96,7 @@ const presets = {
   faded: [{ opacity: 0 }, { opacity: 1 }]
 };
 
-// layout presets, you can use multiple, along with `style` prop, they will have a higher priority over it
+// layout presets, you can use multiple, along with `style` prop, they have a higher priority over it
 const layoutPresets = {
   absolute: { bottom: 0, left: 0, position: 'absolute', right: 0, top: 0 },
   centered: { alignSelf: 'center' },
