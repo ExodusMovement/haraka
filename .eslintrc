@@ -13,6 +13,7 @@
     "operator-linebreak": 0,
     "react/jsx-filename-extension": 0,
     "react/jsx-one-expression-per-line": 0,
-    "react/prop-types": [2, { "skipUndeclared": true }]
+    "react/prop-types": [2, { "skipUndeclared": true }],
+    "react/sort-comp": 0
   }
 }

@@ -3,11 +3,6 @@ import React from 'react';
 import { Animated } from 'react-native';
 
 export default class Behavior extends React.PureComponent {
-  nativeDriver = this.props.nativeDriver || new Animated.Value(0);
-  driver = this.props.driver || new Animated.Value(0);
-
-  index = this.props.initialState;
-
   static defaultProps = {
     clamp: false,
     config: { type: 'spring' },
@@ -15,6 +10,11 @@ export default class Behavior extends React.PureComponent {
     state: [{}, {}],
     style: {}
   };
+
+  nativeDriver = this.props.nativeDriver || new Animated.Value(0);
+  driver = this.props.driver || new Animated.Value(0);
+
+  index = this.props.initialState;
 
   goTo = (state, config = {}) => {
     const { config: defaultConfig } = this.props;
@@ -33,7 +33,7 @@ export default class Behavior extends React.PureComponent {
           toValue,
           useNativeDriver: true
         }),
-        engine(this.driver, { ...opts, toValue })
+        engine(this.driver, { ...opts, useNativeDriver: undefined, toValue })
       ]);
 
     if (Array.isArray(state)) {
@@ -64,6 +64,18 @@ export default class Behavior extends React.PureComponent {
     });
   };
 
+  presets = {
+    faded: [{ opacity: 0 }, { opacity: 1 }]
+  };
+
+  layoutPresets = {
+    absolute: { bottom: 0, left: 0, position: 'absolute', right: 0, top: 0 },
+    centered: { alignSelf: 'center' },
+    fixed: { position: 'absolute' },
+    full: { flex: 1 },
+    landing: { alignItems: 'center', flex: 1, justifyContent: 'center' }
+  };
+
   render() {
     const {
       absolute,
@@ -87,26 +99,19 @@ export default class Behavior extends React.PureComponent {
 
     let { state } = this.props;
 
-    const presets = {
-      faded: [{ opacity: 0 }, { opacity: 1 }]
-    };
+    if (initialState) {
+      this.nativeDriver.setValue(initialState);
+      this.driver.setValue(initialState);
+    }
 
-    if (faded) state = presets.faded;
-
-    const layoutPresets = {
-      absolute: { bottom: 0, left: 0, position: 'absolute', right: 0, top: 0 },
-      centered: { alignSelf: 'center' },
-      fixed: { position: 'absolute' },
-      full: { flex: 1 },
-      landing: { alignItems: 'center', flex: 1, justifyContent: 'center' }
-    };
+    if (faded) state = this.presets.faded;
 
     const viewStyles = {
-      ...layoutPresets[absolute && 'absolute'],
-      ...layoutPresets[centered && 'centered'],
-      ...layoutPresets[fixed && 'fixed'],
-      ...layoutPresets[full && 'full'],
-      ...layoutPresets[landing && 'landing'],
+      ...this.layoutPresets[absolute && 'absolute'],
+      ...this.layoutPresets[centered && 'centered'],
+      ...this.layoutPresets[fixed && 'fixed'],
+      ...this.layoutPresets[full && 'full'],
+      ...this.layoutPresets[landing && 'landing'],
       ...rest
     };
 
@@ -181,11 +186,6 @@ export default class Behavior extends React.PureComponent {
     };
 
     const styles = { backgroundColor, height, width };
-
-    if (initialState) {
-      this.nativeDriver.setValue(initialState);
-      this.driver.setValue(initialState);
-    }
 
     return (
       <Animated.View style={[style, viewStyles, nativeStyles]}>
