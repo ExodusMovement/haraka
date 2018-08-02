@@ -7,6 +7,7 @@ export default class Behavior extends React.PureComponent {
     clamp: false,
     config: { type: 'spring' },
     initialState: 0,
+    skipProps: [],
     state: [{}, {}],
     style: {},
     unmounted: false
@@ -116,6 +117,7 @@ export default class Behavior extends React.PureComponent {
       landing,
       nativeDriver,
       pointerEvents,
+      skipProps,
       state: _state,
       style,
       unmounted,
@@ -125,15 +127,6 @@ export default class Behavior extends React.PureComponent {
     let { state } = this.props;
 
     if (faded) state = this.presets.faded;
-
-    const viewStyles = {
-      ...this.layoutPresets[absolute && 'absolute'],
-      ...this.layoutPresets[centered && 'centered'],
-      ...this.layoutPresets[fixed && 'fixed'],
-      ...this.layoutPresets[full && 'full'],
-      ...this.layoutPresets[landing && 'landing'],
-      ...rest
-    };
 
     const inputRange =
       keys ||
@@ -187,6 +180,20 @@ export default class Behavior extends React.PureComponent {
     const height = addProp('height', null);
     const width = addProp('width', null);
 
+    const viewStyles = {
+      ...this.layoutPresets[absolute && 'absolute'],
+      ...this.layoutPresets[centered && 'centered'],
+      ...this.layoutPresets[fixed && 'fixed'],
+      ...this.layoutPresets[full && 'full'],
+      ...this.layoutPresets[landing && 'landing']
+    };
+
+    const propStyles = Object.keys(rest).reduce((obj, key) => {
+      if (skipProps.includes(key)) return obj;
+
+      return { ...obj, [key]: rest[key] };
+    }, {});
+
     const nativeStyles = {
       opacity,
       transform: [{ rotate }, { scale }, { translateX }, { translateY }]
@@ -196,7 +203,7 @@ export default class Behavior extends React.PureComponent {
 
     return (
       <Animated.View
-        style={[style, viewStyles, nativeStyles]}
+        style={[style, viewStyles, propStyles, nativeStyles]}
         {...{ pointerEvents }}>
         <Animated.View style={styles}>{children}</Animated.View>
       </Animated.View>

@@ -1,3 +1,7 @@
+# 0.0.26
+
+- Support filtering props from being included in styles, when using additional props as style overrides, through `skipProps` prop.
+
 # 0.0.25
 
 - **Breaking**: Drop simple gestures recognition. Use a tool like `react-native-gesture-handler` instead.
