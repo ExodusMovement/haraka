@@ -5,11 +5,14 @@ import { Animated } from 'react-native';
 export default class Behavior extends React.PureComponent {
   static defaultProps = {
     clamp: false,
+    clearStyleProps: false,
     config: { type: 'spring' },
     initialState: 0,
     skipProps: [],
+    skipStyleProps: [],
     state: [{}, {}],
     style: {},
+    styleProps: [],
     unmounted: false
   };
 
@@ -85,18 +88,6 @@ export default class Behavior extends React.PureComponent {
     });
   };
 
-  presets = {
-    faded: [{ opacity: 0 }, { opacity: 1 }]
-  };
-
-  layoutPresets = {
-    absolute: { bottom: 0, left: 0, position: 'absolute', right: 0, top: 0 },
-    centered: { alignSelf: 'center' },
-    fixed: { position: 'absolute' },
-    full: { flex: 1 },
-    landing: { alignItems: 'center', flex: 1, justifyContent: 'center' }
-  };
-
   render() {
     const { mounted } = this.state;
 
@@ -107,6 +98,7 @@ export default class Behavior extends React.PureComponent {
       centered,
       children,
       clamp,
+      clearStyleProps,
       config,
       driver,
       faded,
@@ -118,15 +110,43 @@ export default class Behavior extends React.PureComponent {
       nativeDriver,
       pointerEvents,
       skipProps,
+      skipStyleProps,
       state: _state,
       style,
+      styleProps,
       unmounted,
       ...rest
     } = this.props;
 
     let { state } = this.props;
 
-    if (faded) state = this.presets.faded;
+    const presets = {
+      faded: [{ opacity: 0 }, { opacity: 1 }]
+    };
+
+    if (faded) state = presets.faded;
+
+    const layoutPresets = {
+      absolute: { bottom: 0, left: 0, position: 'absolute', right: 0, top: 0 },
+      centered: { alignSelf: 'center' },
+      fixed: { position: 'absolute' },
+      full: { flex: 1 },
+      landing: { alignItems: 'center', flex: 1, justifyContent: 'center' }
+    };
+
+    const viewStyles = {
+      ...layoutPresets[absolute && 'absolute'],
+      ...layoutPresets[centered && 'centered'],
+      ...layoutPresets[fixed && 'fixed'],
+      ...layoutPresets[full && 'full'],
+      ...layoutPresets[landing && 'landing']
+    };
+
+    const propStyles = Object.keys(rest).reduce((obj, key) => {
+      if (skipProps.includes(key)) return obj;
+
+      return { ...obj, [key]: rest[key] };
+    }, {});
 
     const inputRange =
       keys ||
@@ -156,50 +176,49 @@ export default class Behavior extends React.PureComponent {
         return range;
       }, []);
 
-    const addNativeProp = (prop, defaultValue) =>
-      this.nativeDriver.interpolate({
+    const addProp = (prop, defaultValue, native) => {
+      const propDriver = native ? this.nativeDriver : this.driver;
+
+      return propDriver.interpolate({
         inputRange,
         outputRange: getRange(prop, defaultValue),
         extrapolate: clamp ? 'clamp' : undefined
       });
-
-    const addProp = (prop, defaultValue) =>
-      this.driver.interpolate({
-        inputRange,
-        outputRange: getRange(prop, defaultValue),
-        extrapolate: clamp ? 'clamp' : undefined
-      });
-
-    const opacity = addNativeProp('opacity', 1);
-    const rotate = addNativeProp('rotate', '0deg');
-    const scale = addNativeProp('scale', 1);
-    const translateX = addNativeProp('translateX', 0);
-    const translateY = addNativeProp('translateY', 0);
-
-    const backgroundColor = addProp('backgroundColor', 'transparent');
-    const height = addProp('height', null);
-    const width = addProp('width', null);
-
-    const viewStyles = {
-      ...this.layoutPresets[absolute && 'absolute'],
-      ...this.layoutPresets[centered && 'centered'],
-      ...this.layoutPresets[fixed && 'fixed'],
-      ...this.layoutPresets[full && 'full'],
-      ...this.layoutPresets[landing && 'landing']
     };
 
-    const propStyles = Object.keys(rest).reduce((obj, key) => {
-      if (skipProps.includes(key)) return obj;
+    const defaultStyleProps = !clearStyleProps
+      ? [
+          { prop: 'opacity', default: 1, native: true },
+          { prop: 'rotate', default: '0deg', native: true, transform: true },
+          { prop: 'scale', default: 1, native: true, transform: true },
+          { prop: 'translateX', default: 0, native: true, transform: true },
+          { prop: 'translateY', default: 0, native: true, transform: true },
 
-      return { ...obj, [key]: rest[key] };
-    }, {});
+          { prop: 'backgroundColor', default: 'transparent' },
+          { prop: 'height', default: null },
+          { prop: 'width', default: null }
+        ]
+      : [];
 
-    const nativeStyles = {
-      opacity,
-      transform: [{ rotate }, { scale }, { translateX }, { translateY }]
-    };
+    const nativeStyles = {};
+    const styles = {};
 
-    const styles = { backgroundColor, height, width };
+    [...defaultStyleProps, ...styleProps].forEach(
+      ({ prop, default: defaultValue, native, transform }) => {
+        if (!skipStyleProps.includes(prop)) {
+          const stylesRef = native ? nativeStyles : styles;
+
+          if (transform) {
+            stylesRef.transform = [
+              ...(stylesRef.transform || []),
+              { [prop]: addProp(prop, defaultValue, native) }
+            ];
+          } else {
+            stylesRef[prop] = addProp(prop, defaultValue, native);
+          }
+        }
+      }
+    );
 
     return (
       <Animated.View

@@ -1,6 +1,33 @@
+# 0.0.27
+
+- Allow dropping unused style props to enhance performance through `skipStyleProps`.
+- Allow adding any type of style props manually through `styleProps`.
+- Allow removing all default style props on mount and utilize whatever in `styleProps` only through `clearStyleProps` prop.
+
+```js
+const defaultStyleProps = [
+  // nativeDriver
+  { prop: 'opacity', default: 1, native: true },
+  { prop: 'rotate', default: '0deg', native: true, transform: true },
+  { prop: 'scale', default: 1, native: true, transform: true },
+  { prop: 'translateX', default: 0, native: true, transform: true },
+  { prop: 'translateY', default: 0, native: true, transform: true },
+
+  // driver (non-native)
+  { prop: 'backgroundColor', default: 'transparent' },
+  { prop: 'height', default: null },
+  { prop: 'width', default: null },
+
+  ...styleProps // add yours, or overwrite defaults
+];
+
+// if any of these props exist in `skipStyleProps` they will not be used
+// and no interpolation values would be created, slightly boosting perf.
+```
+
 # 0.0.26
 
-- Support filtering props from being included in styles, when using additional props as style overrides, through `skipProps` prop.
+- Support filtering passed props from being included in styles, when using additional props as style overrides, through `skipProps` prop.
 
 # 0.0.25
 
@@ -14,7 +41,7 @@
 
 # 0.0.21
 
-- **Breaking**: Project has been renamed to `haraka`. You can continue to use [`react-native-behavior`](https://www.npmjs.com/package/react-native-behavior) if you are already using it in a project (has been stable for over a year), it will not reacive any future updates however and has been deprecated.
+- **Breaking**: Project has been renamed to `haraka`. You can continue to use [`react-native-behavior`](https://www.npmjs.com/package/react-native-behavior) if you are already using it in a project (has been stable for over a year), it will not receive any future updates however and has been deprecated.
 - **Breaking**: `animatedNativeValue` prop is now `nativeDriver`.
 - **Breaking**: `animatedValue` prop is now `driver`.
 - **Breaking**: `states` prop is now just `state` (without the s).

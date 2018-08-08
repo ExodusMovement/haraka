@@ -65,8 +65,16 @@ type State = {
   width?: number // no percentages, default = null
 };
 
+type StyleProp = {
+  prop: string,
+  default: string | number | null,
+  native?: bool,
+  transform: bool
+};
+
 type Behavior = {
   config?: DefaultConfig,
+  clearStyleProps?: bool, // removes all default style props on mount and utilizes whatever in `styleProps` only
   state?: State[], // default value is [{}, {}], [{}] can be used for a static behavior
   nativeDriver?: AnimatedValue, // default = new Animated.Value(0), you can use a custom native driver
   driver?: AnimatedValue, // default = new Animated.Value(0), you can use a custom driver
@@ -76,8 +84,10 @@ type Behavior = {
   clamp?: bool, // default = false, prevent animations from exceeding their ranges
   keys?: number[], // can be used with custom drivers to define custom state keys/indices
   initialState?: number, // default = 0
-  skipProps?: string[], // default = []
+  skipProps?: string[], // default = [], allows filtering passed props from being included in styles
+  skipStyleProps?: string[], // default = [], allows dropping unused style props
   style?: object, // style of the behavior view, default = {}, AnimatedViewStyle (see React Native docs)
+  styleProps?: StyleProp[], // default = [], allows adding any type of style props manually
   unmounted?: bool, // default = false, start behavior in the unmounted state
   // animation presets (they populate `state` prop which will be ignored):
   faded?: bool, // default = false, see below for available presets
