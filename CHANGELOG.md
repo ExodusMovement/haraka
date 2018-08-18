@@ -1,3 +1,7 @@
+# 0.0.29
+
+- Support `setNativeProps`.
+
 # 0.0.27
 
 - Allow dropping unused style props to enhance performance through `skipStyleProps`.
