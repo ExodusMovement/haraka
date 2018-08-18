@@ -88,6 +88,14 @@ export default class Behavior extends React.PureComponent {
     });
   };
 
+  handleRef = ref => {
+    this.ref = ref;
+  };
+
+  setNativeProps = props => {
+    this.ref.setNativeProps(props);
+  };
+
   render() {
     const { mounted } = this.state;
 
@@ -222,6 +230,7 @@ export default class Behavior extends React.PureComponent {
 
     return (
       <Animated.View
+        ref={this.handleRef}
         style={[style, viewStyles, propStyles, nativeStyles]}
         {...{ pointerEvents }}>
         <Animated.View style={styles}>{children}</Animated.View>
