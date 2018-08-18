@@ -122,6 +122,8 @@ behavior.mount(state: ?number) // useful for animations that start in a hidden s
 // use along with `unmounted` prop and `mount()`
 
 behavior.key // to retrieve current state key
+
+behavior.setNativeProps({} : Props) // gives you the ability to change props without having to re-render
 ```
 
 ## Examples
