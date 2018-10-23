@@ -1,3 +1,12 @@
+# 0.0.30
+
+- Support declarative API for state transitions, You can now do this to toggle between states:
+
+```js
+<Behavior currentState={0} />
+<Behavior currentState={1} />
+```
+
 # 0.0.29
 
 - Support `setNativeProps`.

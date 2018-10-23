@@ -7,6 +7,7 @@ export default class Behavior extends React.PureComponent {
     clamp: false,
     clearStyleProps: false,
     config: { type: 'spring' },
+    currentState: 0,
     initialState: 0,
     skipProps: [],
     skipStyleProps: [],
@@ -27,6 +28,15 @@ export default class Behavior extends React.PureComponent {
     this.key = initialState
 
     this.state = { mounted: !unmounted }
+  }
+
+  componentWillReceiveProps (nextProps) {
+    const { currentState } = this.props
+    const { currentState: nextCurrentState } = nextProps
+
+    if (currentState !== nextCurrentState) {
+      this.goTo(nextCurrentState)
+    }
   }
 
   unmount = () => this.setState({ mounted: false })
@@ -211,7 +221,9 @@ export default class Behavior extends React.PureComponent {
     const nativeStyles = {}
     const styles = {}
 
-    ;[...defaultStyleProps, ...styleProps].forEach(
+    const allStyleProps = [...defaultStyleProps, ...styleProps]
+
+    allStyleProps.forEach(
       ({ prop, default: defaultValue, native, transform }) => {
         if (!skipStyleProps.includes(prop)) {
           const stylesRef = native ? nativeStyles : styles

@@ -83,6 +83,7 @@ type Behavior = {
   children?: any, // behavior component can enclose other components or enclose another behavior(s)
   clamp?: bool, // default = false, prevent animations from exceeding their ranges
   keys?: number[], // can be used with custom drivers to define custom state keys/indices
+  currentState?: number, // default = 0, use to declaratively toggle animation
   initialState?: number, // default = 0
   skipProps?: string[], // default = [], allows filtering passed props from being included in styles
   skipStyleProps?: string[], // default = [], allows dropping unused style props
