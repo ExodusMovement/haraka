@@ -32,6 +32,10 @@ this.box.current.goTo(2); // animates the opacity of the -now- green box from 1 
 this.box.current.goTo(3); // rotates the faded green box 45 degrees, starting from 0
 
 this.box.current.goTo([1, 2, 3]); // plays a sequence of behavior states, colorize then fade then tilt
+
+// or use the declarative API instead of `goTo()`
+<Behavior currentState={0} />
+<Behavior currentState={1} />
 ```
 
 ## Install
