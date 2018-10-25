@@ -51,6 +51,7 @@ type DefaultConfig = { // goTo() default configuration
   type?: 'spring' | 'timing', // default = 'spring', `Animated.spring()` or `Animated.timing()`
   onStart?: func, // to be executed once animation is started, inside `.start()`
   onComplete?: func, // to be executed once animation is completed, inside `.start()`
+  delay?: number, // used to delay the start of the animation (ms)
   ref?: bool, // this will return the animation reference instead of playing it immediately
   // can be useful for animating multiple behaviors with `Animated.sequence()` and `Animated.parallel()`
   // `onStart` and `onComplete `are ignored when `ref` is enabled

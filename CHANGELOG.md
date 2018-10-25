@@ -1,3 +1,7 @@
+# 0.0.31
+
+- Support `delay` in animation config.
+
 # 0.0.30
 
 - Support declarative API for state transitions, You can now do this to toggle between states:
@@ -31,8 +35,8 @@ const defaultStyleProps = [
   { prop: 'height', default: null },
   { prop: 'width', default: null },
 
-  ...styleProps // add yours, or overwrite defaults
-];
+  ...styleProps, // add yours, or overwrite defaults
+]
 
 // if any of these props exist in `skipStyleProps` they will not be used
 // and no interpolation values would be created, slightly boosting perf.

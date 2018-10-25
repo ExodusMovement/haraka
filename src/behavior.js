@@ -53,7 +53,7 @@ export default class Behavior extends React.PureComponent {
   goTo = (state, config = {}) => {
     const { config: defaultConfig } = this.props
 
-    const { type, onStart, onComplete, ref, ...opts } = {
+    const { type, onStart, onComplete, ref, delay, ...opts } = {
       ...defaultConfig,
       ...config,
     }
@@ -77,7 +77,11 @@ export default class Behavior extends React.PureComponent {
 
       this.key = sequence[sequence.length - 1]
 
-      const animationRef = Animated.sequence(sequence)
+      let animationRef = Animated.sequence(sequence)
+
+      if (delay) {
+        animationRef = Animated.sequence([Animated.delay(delay), animationRef])
+      }
 
       if (ref) return animationRef
 

@@ -2,7 +2,7 @@
   "license": "MIT",
   "name": "haraka",
   "description": "Stateful animations in React Native.",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
