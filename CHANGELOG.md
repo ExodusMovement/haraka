@@ -1,4 +1,4 @@
-# 0.0.31
+# 0.0.32
 
 - Support `delay` in animation config.
 

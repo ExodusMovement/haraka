@@ -93,7 +93,11 @@ export default class Behavior extends React.PureComponent {
 
     this.key = state
 
-    const animationRef = animate(state)
+    let animationRef = animate(state)
+
+    if (delay) {
+      animationRef = Animated.sequence([Animated.delay(delay), animationRef])
+    }
 
     if (ref) return animationRef
 
