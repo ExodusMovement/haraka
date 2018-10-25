@@ -14,10 +14,10 @@ export default class Behavior extends React.PureComponent {
     state: [{}, {}],
     style: {},
     styleProps: [],
-    unmounted: false
+    unmounted: false,
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     const { initialState, nativeDriver, driver, unmounted } = this.props
@@ -30,7 +30,7 @@ export default class Behavior extends React.PureComponent {
     this.state = { mounted: !unmounted }
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     const { currentState } = this.props
     const { currentState: nextCurrentState } = nextProps
 
@@ -41,7 +41,7 @@ export default class Behavior extends React.PureComponent {
 
   unmount = () => this.setState({ mounted: false })
 
-  mount = state => {
+  mount = (state) => {
     const { initialState } = this.props
 
     this.nativeDriver.setValue(state || initialState)
@@ -55,25 +55,25 @@ export default class Behavior extends React.PureComponent {
 
     const { type, onStart, onComplete, ref, ...opts } = {
       ...defaultConfig,
-      ...config
+      ...config,
     }
 
     const engine = type === 'timing' ? Animated.timing : Animated.spring
 
-    const animate = toValue =>
+    const animate = (toValue) =>
       Animated.parallel([
         engine(this.nativeDriver, {
           ...opts,
           toValue,
-          useNativeDriver: true
+          useNativeDriver: true,
         }),
-        engine(this.driver, { ...opts, useNativeDriver: undefined, toValue })
+        engine(this.driver, { ...opts, useNativeDriver: undefined, toValue }),
       ])
 
     if (Array.isArray(state)) {
       const sequence = []
 
-      state.forEach(toValue => sequence.push(animate(toValue)))
+      state.forEach((toValue) => sequence.push(animate(toValue)))
 
       this.key = sequence[sequence.length - 1]
 
@@ -81,7 +81,7 @@ export default class Behavior extends React.PureComponent {
 
       if (ref) return animationRef
 
-      return animationRef.start(animation => {
+      return animationRef.start((animation) => {
         if (onStart) onStart()
         if (animation.finished && onComplete) onComplete()
       })
@@ -93,20 +93,20 @@ export default class Behavior extends React.PureComponent {
 
     if (ref) return animationRef
 
-    return animationRef.start(animation => {
+    return animationRef.start((animation) => {
       if (animation.finished && onComplete) onComplete()
     })
   }
 
-  handleRef = ref => {
+  handleRef = (ref) => {
     this.ref = ref
   }
 
-  setNativeProps = props => {
+  setNativeProps = (props) => {
     this.ref.setNativeProps(props)
   }
 
-  render () {
+  render() {
     const { mounted } = this.state
 
     if (!mounted) return null
@@ -139,7 +139,7 @@ export default class Behavior extends React.PureComponent {
     let { state } = this.props
 
     const presets = {
-      faded: [{ opacity: 0 }, { opacity: 1 }]
+      faded: [{ opacity: 0 }, { opacity: 1 }],
     }
 
     if (faded) state = presets.faded
@@ -149,7 +149,7 @@ export default class Behavior extends React.PureComponent {
       centered: { alignSelf: 'center' },
       fixed: { position: 'absolute' },
       full: { flex: 1 },
-      landing: { alignItems: 'center', flex: 1, justifyContent: 'center' }
+      landing: { alignItems: 'center', flex: 1, justifyContent: 'center' },
     }
 
     const viewStyles = {
@@ -157,7 +157,7 @@ export default class Behavior extends React.PureComponent {
       ...layoutPresets[centered && 'centered'],
       ...layoutPresets[fixed && 'fixed'],
       ...layoutPresets[full && 'full'],
-      ...layoutPresets[landing && 'landing']
+      ...layoutPresets[landing && 'landing'],
     }
 
     const propStyles = Object.keys(rest).reduce((obj, key) => {
@@ -200,51 +200,48 @@ export default class Behavior extends React.PureComponent {
       return propDriver.interpolate({
         inputRange,
         outputRange: getRange(prop, defaultValue),
-        extrapolate: clamp ? 'clamp' : undefined
+        extrapolate: clamp ? 'clamp' : undefined,
       })
     }
 
     const defaultStyleProps = !clearStyleProps
       ? [
-        { prop: 'opacity', default: 1, native: true },
-        { prop: 'rotate', default: '0deg', native: true, transform: true },
-        { prop: 'scale', default: 1, native: true, transform: true },
-        { prop: 'translateX', default: 0, native: true, transform: true },
-        { prop: 'translateY', default: 0, native: true, transform: true },
+          { prop: 'opacity', default: 1, native: true },
+          { prop: 'rotate', default: '0deg', native: true, transform: true },
+          { prop: 'scale', default: 1, native: true, transform: true },
+          { prop: 'translateX', default: 0, native: true, transform: true },
+          { prop: 'translateY', default: 0, native: true, transform: true },
 
-        { prop: 'backgroundColor', default: 'transparent' },
-        { prop: 'height', default: null },
-        { prop: 'width', default: null }
-      ]
+          { prop: 'backgroundColor', default: 'transparent' },
+          { prop: 'height', default: null },
+          { prop: 'width', default: null },
+        ]
       : []
 
     const nativeStyles = {}
     const styles = {}
 
-    const allStyleProps = [...defaultStyleProps, ...styleProps]
+    [...defaultStyleProps, ...styleProps].forEach(({ prop, default: defaultValue, native, transform }) => {
+      if (!skipStyleProps.includes(prop)) {
+        const stylesRef = native ? nativeStyles : styles
 
-    allStyleProps.forEach(
-      ({ prop, default: defaultValue, native, transform }) => {
-        if (!skipStyleProps.includes(prop)) {
-          const stylesRef = native ? nativeStyles : styles
-
-          if (transform) {
-            stylesRef.transform = [
-              ...(stylesRef.transform || []),
-              { [prop]: addProp(prop, defaultValue, native) }
-            ]
-          } else {
-            stylesRef[prop] = addProp(prop, defaultValue, native)
-          }
+        if (transform) {
+          stylesRef.transform = [
+            ...(stylesRef.transform || []),
+            { [prop]: addProp(prop, defaultValue, native) },
+          ]
+        } else {
+          stylesRef[prop] = addProp(prop, defaultValue, native)
         }
       }
-    )
+    })
 
     return (
       <Animated.View
         ref={this.handleRef}
         style={[style, viewStyles, propStyles, nativeStyles]}
-        {...{ pointerEvents }}>
+        {...{ pointerEvents }}
+      >
         <Animated.View style={styles}>{children}</Animated.View>
       </Animated.View>
     )
