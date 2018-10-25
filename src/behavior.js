@@ -225,7 +225,9 @@ export default class Behavior extends React.PureComponent {
     const nativeStyles = {}
     const styles = {}
 
-    [...defaultStyleProps, ...styleProps].forEach(({ prop, default: defaultValue, native, transform }) => {
+    const allStyleProps = [...defaultStyleProps, ...styleProps]
+
+    allStyleProps.forEach(({ prop, default: defaultValue, native, transform }) => {
       if (!skipStyleProps.includes(prop)) {
         const stylesRef = native ? nativeStyles : styles
 
