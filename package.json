@@ -1,12 +1,12 @@
 {
   "license": "MIT",
-  "name": "haraka",
+  "name": "@exodus/haraka",
   "description": "Stateful animations in React Native.",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sonaye/haraka.git"
+    "url": "git+https://github.com/ExodusMovement/haraka"
   },
   "peerDependencies": {
     "react": "*",

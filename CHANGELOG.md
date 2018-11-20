@@ -1,3 +1,7 @@
+# 0.0.33
+
+- **Breaking:** Package has been moved to the npm name `@exodus/haraka`, see #11.
+
 # 0.0.32
 
 - Support `delay` in animation config.

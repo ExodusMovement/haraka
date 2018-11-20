@@ -1,6 +1,6 @@
 # Haraka
 
-[![npm version](https://badge.fury.io/js/haraka.svg)](https://badge.fury.io/js/haraka)
+[![npm version](https://img.shields.io/npm/dt/@exodus/haraka.svg)](https://www.npmjs.com/package/@exodus/haraka)
 
 <img src="haraka.svg" alt="Haraka logo" width="128">
 
@@ -11,7 +11,7 @@ You define the behavior states of the component, and then animate between them.
 ## Usage
 
 ```js
-import Behavior from 'haraka';
+import Behavior from '@exodus/haraka';
 
 box = React.createRef();
 
@@ -41,7 +41,7 @@ this.box.current.goTo([1, 2, 3]); // plays a sequence of behavior states, colori
 ## Install
 
 ```bash
-yarn add haraka
+yarn add @exodus/haraka
 ```
 
 ## Definition
