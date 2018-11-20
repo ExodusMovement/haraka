@@ -1,6 +1,6 @@
 # Haraka
 
-[![npm version](https://img.shields.io/npm/dt/@exodus/haraka.svg)](https://www.npmjs.com/package/@exodus/haraka)
+[![npm version](https://badge.fury.io/js/%40exodus%2Fharaka.svg)](https://badge.fury.io/js/%40exodus%2Fharaka)
 
 <img src="haraka.svg" alt="Haraka logo" width="128">
 
