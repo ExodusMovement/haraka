@@ -81,7 +81,7 @@ type StyleProp = {
 type Behavior = {
   config?: DefaultConfig,
   clearStyleProps?: bool, // removes all default style props on mount and utilizes whatever in `styleProps` only
-  disabled?: bool, // allow disabling the behavior interactivity through pointerEvents = none
+  disabled?: bool, // allows disabling the behavior interactivity through pointerEvents = none
   state?: State[], // default value is [{}, {}], [{}] can be used for a static behavior
   nativeDriver?: AnimatedValue, // default = new Animated.Value(0), you can use a custom native driver
   driver?: AnimatedValue, // default = new Animated.Value(0), you can use a custom driver
@@ -99,6 +99,10 @@ type Behavior = {
   unmounted?: bool, // default = false, start behavior in the unmounted state
   // animation presets (they populate `state` prop which will be ignored):
   faded?: bool, // default = false, see below for available presets
+  fadedDown?: bool,
+  fadedLeft?: bool,
+  fadedRight?: bool,
+  fadedUp?: bool,
   // layout presets (they populate `style` prop):
   absolute?: bool, // default = false, see below for available presets
   centered?: bool, // default = false
@@ -109,7 +113,11 @@ type Behavior = {
 
 // animation presets
 const presets = {
-  faded: [{ opacity: 0 }, { opacity: 1 }]
+  faded: [{ opacity: 0 }, { opacity: 1 }],
+  fadedDown: [{ opacity: 0, translateY: 20 }, { opacity: 1, translateY: 0 }],
+  fadedLeft: [{ opacity: 0, translateX: -20 }, { opacity: 1, translateX: 0 }],
+  fadedRight: [{ opacity: 0, translateX: 20 }, { opacity: 1, translateX: 0 }],
+  fadedUp: [{ opacity: 0, translateY: -20 }, { opacity: 1, translateY: 0 }],
 }
 
 // layout presets, you can use multiple, along with `style` prop, they have a higher priority over it

@@ -1,5 +1,6 @@
 # 0.0.35
 
+- Add `fadedDown`, `fadedLeft`, `fadedRight` and `fadedUp` presets.
 - Add `disabled` prop, which allows disabling the behavior interactivity through `pointerEvents = none`.
 - **Breaking**: Drop `onStart`, has been broken for a while.
 - Allow passing state specific config.

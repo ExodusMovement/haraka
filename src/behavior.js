@@ -180,6 +180,10 @@ export default class Behavior extends React.PureComponent {
       disabled,
       driver,
       faded,
+      fadedDown,
+      fadedLeft,
+      fadedRight,
+      fadedUp,
       fixed,
       full,
       initialState,
@@ -200,11 +204,17 @@ export default class Behavior extends React.PureComponent {
 
     const presets = {
       faded: [{ opacity: 0 }, { opacity: 1 }],
+      fadedDown: [{ opacity: 0, translateY: 20 }, { opacity: 1, translateY: 0 }],
+      fadedLeft: [{ opacity: 0, translateX: -20 }, { opacity: 1, translateX: 0 }],
+      fadedRight: [{ opacity: 0, translateX: 20 }, { opacity: 1, translateX: 0 }],
+      fadedUp: [{ opacity: 0, translateY: -20 }, { opacity: 1, translateY: 0 }],
     }
 
-    if (faded) {
-      state = presets.faded
-    }
+    if (faded) state = presets.faded
+    if (fadedDown) state = presets.fadedDown
+    if (fadedLeft) state = presets.fadedLeft
+    if (fadedRight) state = presets.fadedRight
+    if (fadedUp) state = presets.fadedUp
 
     const layoutPresets = {
       absolute: { bottom: 0, left: 0, position: 'absolute', right: 0, top: 0 },
