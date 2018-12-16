@@ -50,11 +50,16 @@ export default class Behavior extends React.PureComponent {
     this.setState({ mounted: true })
   }
 
-  goTo = (state, config = {}) => {
-    const { config: defaultConfig } = this.props
+  goTo = (key, config = {}) => {
+    const isSequence = Array.isArray(key)
 
-    const { type, onStart, onComplete, ref, delay, ...opts } = {
+    const { config: defaultConfig, state } = this.props
+
+    const { config: stateConfig = {} } = isSequence ? {} : state[key]
+
+    const { type, onComplete, ref, delay, unmount, ...opts } = {
       ...defaultConfig,
+      ...stateConfig,
       ...config,
     }
 
@@ -70,10 +75,10 @@ export default class Behavior extends React.PureComponent {
         engine(this.driver, { ...opts, useNativeDriver: undefined, toValue }),
       ])
 
-    if (Array.isArray(state)) {
+    if (isSequence) {
       const sequence = []
 
-      state.forEach((toValue) => sequence.push(animate(toValue)))
+      key.forEach((toValue) => sequence.push(animate(toValue)))
 
       this.key = sequence[sequence.length - 1]
 
@@ -86,14 +91,16 @@ export default class Behavior extends React.PureComponent {
       if (ref) return animationRef
 
       return animationRef.start((animation) => {
-        if (onStart) onStart()
-        if (animation.finished && onComplete) onComplete()
+        if (animation.finished) {
+          if (unmount) this.unmount()
+          if (onComplete) onComplete()
+        }
       })
     }
 
-    this.key = state
+    this.key = key
 
-    let animationRef = animate(state)
+    let animationRef = animate(key)
 
     if (delay) {
       animationRef = Animated.sequence([Animated.delay(delay), animationRef])
@@ -102,7 +109,10 @@ export default class Behavior extends React.PureComponent {
     if (ref) return animationRef
 
     return animationRef.start((animation) => {
-      if (animation.finished && onComplete) onComplete()
+      if (animation.finished) {
+        if (unmount) this.unmount()
+        if (onComplete) onComplete()
+      }
     })
   }
 

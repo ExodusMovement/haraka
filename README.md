@@ -11,9 +11,9 @@ You define the behavior states of the component, and then animate between them.
 ## Usage
 
 ```js
-import Behavior from '@exodus/haraka';
+import Behavior from '@exodus/haraka'
 
-box = React.createRef();
+box = React.createRef()
 
 <Behavior
   ref={this.box}
@@ -23,15 +23,15 @@ box = React.createRef();
     { opacity: 0.5 }, // state 2
     { rotate: '45deg' } // state 3
   ]}
-/>;
+/>
 
 // ..
 
-this.box.current.goTo(1); // animates box's backgroundColor from gray to green
-this.box.current.goTo(2); // animates the opacity of the -now- green box from 1 to 0.5
-this.box.current.goTo(3); // rotates the faded green box 45 degrees, starting from 0
+this.box.current.goTo(1) // animates box's backgroundColor from gray to green
+this.box.current.goTo(2) // animates the opacity of the -now- green box from 1 to 0.5
+this.box.current.goTo(3) // rotates the faded green box 45 degrees, starting from 0
 
-this.box.current.goTo([1, 2, 3]); // plays a sequence of behavior states, colorize then fade then tilt
+this.box.current.goTo([1, 2, 3]) // plays a sequence of behavior states, colorize then fade then tilt
 
 // or use the declarative API instead of `goTo()`
 <Behavior currentState={0} />
@@ -49,15 +49,15 @@ yarn add @exodus/haraka
 ```js
 type DefaultConfig = { // goTo() default configuration
   type?: 'spring' | 'timing', // default = 'spring', `Animated.spring()` or `Animated.timing()`
-  onStart?: func, // to be executed once animation is started, inside `.start()`
   onComplete?: func, // to be executed once animation is completed, inside `.start()`
   delay?: number, // used to delay the start of the animation (ms)
   ref?: bool, // this will return the animation reference instead of playing it immediately
+  unmount? bool, // unmount after animation ends
   // can be useful for animating multiple behaviors with `Animated.sequence()` and `Animated.parallel()`
   // `onStart` and `onComplete `are ignored when `ref` is enabled
   ...AnimatedSpringOptions, // excluding toValue, useNativeDriver (see React Native docs), spring type
   ...AnimatedTimingOptions // excluding toValue, useNativeDriver (see React Native docs), timing type
-};
+}
 
 type State = {
   backgroundColor?: string, // default = 'transparent'
@@ -67,15 +67,16 @@ type State = {
   scale?: number, // default = 1
   translateX?: number, // default = 0
   translateY?: number, // default = 0
-  width?: number // no percentages, default = null
-};
+  width?: number, // no percentages, default = null
+  config?: DefaultConfig // you can pass custom state config here
+}
 
 type StyleProp = {
   prop: string,
   default: string | number | null,
   native?: bool,
   transform: bool
-};
+}
 
 type Behavior = {
   config?: DefaultConfig,
@@ -103,12 +104,12 @@ type Behavior = {
   fixed?: bool, // default = false
   full?: bool, // default = false
   landing?: bool, // default = false
-};
+}
 
 // animation presets
 const presets = {
   faded: [{ opacity: 0 }, { opacity: 1 }]
-};
+}
 
 // layout presets, you can use multiple, along with `style` prop, they have a higher priority over it
 const layoutPresets = {
@@ -117,7 +118,7 @@ const layoutPresets = {
   fixed: { position: 'absolute' },
   full: { flex: 1 },
   landing: { alignItems: 'center', flex: 1, justifyContent: 'center' }
-};
+}
 
 // methods
 // animate to a specific behavior state

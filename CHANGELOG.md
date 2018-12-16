@@ -1,3 +1,20 @@
+# 0.0.34
+
+- **Breaking**: Drop `onStart`.
+- Allow passing state specific config.
+
+```js
+[{ opacity: 0 }, { opacity: 1, config: { delay: 250 }}]
+```
+
+- Allow unmounting after animation completion in state config and `goTo` config.
+
+```js
+[{ opacity: 1 }, { opacity: 0, config: { unmount: true }}]
+// or
+goTo(1, { unmount: true })
+```
+
 # 0.0.33
 
 - **Breaking:** Package has been moved to the npm name `@exodus/haraka`, see [#11](../../issues/11).
