@@ -21,34 +21,43 @@ export default class Behavior extends React.PureComponent {
   constructor(props) {
     super(props)
 
-    const { initialState, nativeDriver, driver, unmounted } = this.props
+    const { driver, initialState, nativeDriver, unmounted } = this.props
 
     this.nativeDriver = nativeDriver || new Animated.Value(initialState)
     this.driver = driver || new Animated.Value(initialState)
 
     this.key = initialState
 
-    this.state = { mounted: !unmounted }
+    this.state = {
+      mounted: !unmounted,
+    }
+  }
+
+  componentDidMount() {
+    const { disabled } = this.props
+
+    if (disabled) {
+      this.disable()
+    }
   }
 
   componentWillReceiveProps(nextProps) {
     const { currentState, disabled } = this.props
     const { currentState: nextCurrentState, disabled: nextDisabled } = nextProps
 
+    // Declarative API
     if (currentState !== nextCurrentState) {
       this.goTo(nextCurrentState)
     }
 
     if (!disabled && nextDisabled) {
-      this.setNativeProps({ pointerEvents: 'none' })
+      this.disable()
     }
 
     if (disabled && !nextDisabled) {
-      this.setNativeProps({ pointerEvents: 'auto' })
+      this.enable()
     }
   }
-
-  unmount = () => this.setState({ mounted: false })
 
   mount = (state) => {
     const { initialState } = this.props
@@ -57,6 +66,10 @@ export default class Behavior extends React.PureComponent {
     this.driver.setValue(state || initialState)
 
     this.setState({ mounted: true })
+  }
+
+  unmount = () => {
+    this.setState({ mounted: false })
   }
 
   goTo = (key, config = {}) => {
@@ -72,17 +85,22 @@ export default class Behavior extends React.PureComponent {
       ...config,
     }
 
-    const engine = type === 'timing' ? Animated.timing : Animated.spring
+    const curve = type === 'timing' ? Animated.timing : Animated.spring
 
-    const animate = (toValue) =>
-      Animated.parallel([
-        engine(this.nativeDriver, {
+    const animate = (toValue) => {
+      return Animated.parallel([
+        curve(this.nativeDriver, {
           ...opts,
           toValue,
           useNativeDriver: true,
         }),
-        engine(this.driver, { ...opts, useNativeDriver: undefined, toValue }),
+        curve(this.driver, {
+          ...opts,
+          toValue,
+          useNativeDriver: false,
+        }),
       ])
+    }
 
     if (isSequence) {
       const sequence = []
@@ -97,7 +115,9 @@ export default class Behavior extends React.PureComponent {
         animationRef = Animated.sequence([Animated.delay(delay), animationRef])
       }
 
-      if (ref) return animationRef
+      if (ref) {
+        return animationRef
+      }
 
       return animationRef.start((animation) => {
         if (animation.finished) {
@@ -115,7 +135,9 @@ export default class Behavior extends React.PureComponent {
       animationRef = Animated.sequence([Animated.delay(delay), animationRef])
     }
 
-    if (ref) return animationRef
+    if (ref) {
+      return animationRef
+    }
 
     return animationRef.start((animation) => {
       if (animation.finished) {
@@ -133,10 +155,20 @@ export default class Behavior extends React.PureComponent {
     this.ref.setNativeProps(props)
   }
 
+  disable = () => {
+    this.setNativeProps({ pointerEvents: 'none' })
+  }
+
+  enable = () => {
+    this.setNativeProps({ pointerEvents: 'auto' })
+  }
+
   render() {
     const { mounted } = this.state
 
-    if (!mounted) return null
+    if (!mounted) {
+      return null
+    }
 
     const {
       absolute,
@@ -145,6 +177,7 @@ export default class Behavior extends React.PureComponent {
       clamp,
       clearStyleProps,
       config,
+      disabled,
       driver,
       faded,
       fixed,
@@ -169,7 +202,9 @@ export default class Behavior extends React.PureComponent {
       faded: [{ opacity: 0 }, { opacity: 1 }],
     }
 
-    if (faded) state = presets.faded
+    if (faded) {
+      state = presets.faded
+    }
 
     const layoutPresets = {
       absolute: { bottom: 0, left: 0, position: 'absolute', right: 0, top: 0 },
@@ -188,7 +223,9 @@ export default class Behavior extends React.PureComponent {
     }
 
     const propStyles = Object.keys(rest).reduce((obj, key) => {
-      if (skipProps.includes(key)) return obj
+      if (skipProps.includes(key)) {
+        return obj
+      }
 
       return { ...obj, [key]: rest[key] }
     }, {})
@@ -204,8 +241,8 @@ export default class Behavior extends React.PureComponent {
       state.push({})
     }
 
-    const getRange = (prop, defaultValue) =>
-      state.reduce((range, currentState, index) => {
+    const getRange = (prop, defaultValue) => {
+      return state.reduce((range, currentState, index) => {
         const prevState = range[index - 1]
 
         range.push(
@@ -220,6 +257,7 @@ export default class Behavior extends React.PureComponent {
 
         return range
       }, [])
+    }
 
     const addProp = (prop, defaultValue, native) => {
       const propDriver = native ? this.nativeDriver : this.driver
@@ -231,8 +269,9 @@ export default class Behavior extends React.PureComponent {
       })
     }
 
-    const defaultStyleProps = !clearStyleProps
-      ? [
+    const defaultStyleProps = clearStyleProps
+      ? []
+      : [
           { prop: 'opacity', default: 1, native: true },
           { prop: 'rotate', default: '0deg', native: true, transform: true },
           { prop: 'scale', default: 1, native: true, transform: true },
@@ -243,7 +282,6 @@ export default class Behavior extends React.PureComponent {
           { prop: 'height', default: null },
           { prop: 'width', default: null },
         ]
-      : []
 
     const nativeStyles = {}
     const styles = {}
@@ -267,9 +305,9 @@ export default class Behavior extends React.PureComponent {
 
     return (
       <Animated.View
+        pointerEvents={pointerEvents}
         ref={this.handleRef}
         style={[style, viewStyles, propStyles, nativeStyles]}
-        {...{ pointerEvents }}
       >
         <Animated.View style={styles}>{children}</Animated.View>
       </Animated.View>
