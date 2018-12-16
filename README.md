@@ -81,6 +81,7 @@ type StyleProp = {
 type Behavior = {
   config?: DefaultConfig,
   clearStyleProps?: bool, // removes all default style props on mount and utilizes whatever in `styleProps` only
+  disabled?: bool, // allow disabling the behavior interactivity through pointerEvents = none
   state?: State[], // default value is [{}, {}], [{}] can be used for a static behavior
   nativeDriver?: AnimatedValue, // default = new Animated.Value(0), you can use a custom native driver
   driver?: AnimatedValue, // default = new Animated.Value(0), you can use a custom driver

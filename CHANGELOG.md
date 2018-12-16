@@ -1,6 +1,7 @@
-# 0.0.34
+# 0.0.35
 
-- **Breaking**: Drop `onStart`.
+- Add `disabled` prop, which allows disabling the behavior interactivity through `pointerEvents = none`.
+- **Breaking**: Drop `onStart`, has been broken for a while.
 - Allow passing state specific config.
 
 ```js

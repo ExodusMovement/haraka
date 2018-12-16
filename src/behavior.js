@@ -8,6 +8,7 @@ export default class Behavior extends React.PureComponent {
     clearStyleProps: false,
     config: { type: 'spring' },
     currentState: 0,
+    disabled: false,
     initialState: 0,
     skipProps: [],
     skipStyleProps: [],
@@ -31,11 +32,19 @@ export default class Behavior extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { currentState } = this.props
-    const { currentState: nextCurrentState } = nextProps
+    const { currentState, disabled } = this.props
+    const { currentState: nextCurrentState, disabled: nextDisabled } = nextProps
 
     if (currentState !== nextCurrentState) {
       this.goTo(nextCurrentState)
+    }
+
+    if (!disabled && nextDisabled) {
+      this.setNativeProps({ pointerEvents: 'none' })
+    }
+
+    if (disabled && !nextDisabled) {
+      this.setNativeProps({ pointerEvents: 'auto' })
     }
   }
 
