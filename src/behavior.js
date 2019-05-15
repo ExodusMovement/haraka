@@ -160,7 +160,7 @@ export default class Behavior extends React.PureComponent {
   }
 
   enable = () => {
-    this.setNativeProps({ pointerEvents: 'auto' })
+    this.setNativeProps({ pointerEvents: 'box-none' })
   }
 
   render() {
@@ -291,6 +291,7 @@ export default class Behavior extends React.PureComponent {
           { prop: 'backgroundColor', default: 'transparent' },
           { prop: 'height', default: null },
           { prop: 'width', default: null },
+          { prop: 'pointerEvents', default: 'box-none' },
         ]
 
     const nativeStyles = {}
