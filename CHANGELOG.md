@@ -1,3 +1,9 @@
+# 0.0.36
+
+- **Breaking:** Removed non-native style props (`backgroundColor`, `height`, `width`).
+- **Breaking:** Removed `fadedDown`, `fadedLeft`, `fadedRight` and `fadedUp` presets.
+- **Breaking:** Minimum required React version is now `16.3.0`.
+
 # 0.0.35
 
 - Add `fadedDown`, `fadedLeft`, `fadedRight` and `fadedUp` presets.

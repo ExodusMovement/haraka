@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/%40exodus%2Fharaka.svg)](https://badge.fury.io/js/%40exodus%2Fharaka)
 
-<img src="haraka.svg" alt="Haraka logo" width="128">
+<img src="haraka.svg" width="128">
 
 You define the behavior states of the component, and then animate between them.
 
@@ -18,20 +18,22 @@ box = React.createRef()
 <Behavior
   ref={this.box}
   state={[
-    { backgroundColor: 'gray' }, // state 0
-    { backgroundColor: 'green' }, // state 1
-    { opacity: 0.5 }, // state 2
-    { rotate: '45deg' } // state 3
+    { opacity: 1 }, // state 0, or just `{}` since the default opacity is 1
+    { opacity: 0.5 }, // state 1
+    { rotate: '45deg' } // state 2
+    { translateX: 10, translateY: 10 } // state 3
+    { scale: 1.1 } // state 4
   ]}
 />
 
 // ..
 
-this.box.current.goTo(1) // animates box's backgroundColor from gray to green
-this.box.current.goTo(2) // animates the opacity of the -now- green box from 1 to 0.5
-this.box.current.goTo(3) // rotates the faded green box 45 degrees, starting from 0
+this.box.current.goTo(1) // animates the opacity of the box from 1 to 0.5
+this.box.current.goTo(2) // rotates the faded box 45 degrees
+this.box.current.goTo(3) // move the tilted faded box right and down by 10 points
+this.box.current.goTo(4) // scale the shifted tilted faded box by a factor of 1.1
 
-this.box.current.goTo([1, 2, 3]) // plays a sequence of behavior states, colorize then fade then tilt
+this.box.current.goTo([1, 2, 3, 4]) // plays a sequence of behavior states
 
 // or use the declarative API instead of `goTo()`
 <Behavior currentState={0} />
@@ -56,26 +58,22 @@ type DefaultConfig = { // goTo() default configuration
   // can be useful for animating multiple behaviors with `Animated.sequence()` and `Animated.parallel()`
   // `onStart` and `onComplete `are ignored when `ref` is enabled
   ...AnimatedSpringOptions, // excluding toValue, useNativeDriver (see React Native docs), spring type
-  ...AnimatedTimingOptions // excluding toValue, useNativeDriver (see React Native docs), timing type
+  ...AnimatedTimingOptions, // excluding toValue, useNativeDriver (see React Native docs), timing type
 }
 
 type State = {
-  backgroundColor?: string, // default = 'transparent'
-  height?: number, // no percentages, default = null
   opacity?: number, // [0, 1], default = 1
   rotate?: string, // e.g. '45deg', default = '0deg'
   scale?: number, // default = 1
   translateX?: number, // default = 0
   translateY?: number, // default = 0
-  width?: number, // no percentages, default = null
-  config?: DefaultConfig // you can pass custom state config here
+  config?: DefaultConfig, // you can pass custom state config here
 }
 
 type StyleProp = {
   prop: string,
   default: string | number | null,
-  native?: bool,
-  transform: bool
+  transform: bool,
 }
 
 type Behavior = {
@@ -84,9 +82,6 @@ type Behavior = {
   disabled?: bool, // allows disabling the behavior interactivity through pointerEvents = none
   state?: State[], // default value is [{}, {}], [{}] can be used for a static behavior
   nativeDriver?: AnimatedValue, // default = new Animated.Value(0), you can use a custom native driver
-  driver?: AnimatedValue, // default = new Animated.Value(0), you can use a custom driver
-  // nativeDriver prop is used for opacity, rotate, scale and translate (native animations)
-  // driver prop is used for backgroundColor, height and width (js animations)
   children?: any, // behavior component can enclose other components or enclose another behavior(s)
   clamp?: bool, // default = false, prevent animations from exceeding their ranges
   keys?: number[], // can be used with custom drivers to define custom state keys/indices
@@ -99,10 +94,6 @@ type Behavior = {
   unmounted?: bool, // default = false, start behavior in the unmounted state
   // animation presets (they populate `state` prop which will be ignored):
   faded?: bool, // default = false, see below for available presets
-  fadedDown?: bool,
-  fadedLeft?: bool,
-  fadedRight?: bool,
-  fadedUp?: bool,
   // layout presets (they populate `style` prop):
   absolute?: bool, // default = false, see below for available presets
   centered?: bool, // default = false
@@ -114,10 +105,6 @@ type Behavior = {
 // animation presets
 const presets = {
   faded: [{ opacity: 0 }, { opacity: 1 }],
-  fadedDown: [{ opacity: 0, translateY: 20 }, { opacity: 1, translateY: 0 }],
-  fadedLeft: [{ opacity: 0, translateX: -20 }, { opacity: 1, translateX: 0 }],
-  fadedRight: [{ opacity: 0, translateX: 20 }, { opacity: 1, translateX: 0 }],
-  fadedUp: [{ opacity: 0, translateY: -20 }, { opacity: 1, translateY: 0 }],
 }
 
 // layout presets, you can use multiple, along with `style` prop, they have a higher priority over it
@@ -126,7 +113,7 @@ const layoutPresets = {
   centered: { alignSelf: 'center' },
   fixed: { position: 'absolute' },
   full: { flex: 1 },
-  landing: { alignItems: 'center', flex: 1, justifyContent: 'center' }
+  landing: { alignItems: 'center', flex: 1, justifyContent: 'center' },
 }
 
 // methods
