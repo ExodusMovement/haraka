@@ -2,7 +2,29 @@ import React from 'react'
 
 import { Animated } from 'react-native'
 
+const PRESETS = {
+  faded: [{ opacity: 0 }, { opacity: 1 }],
+}
+
+const LAYOUT_PRESETS = {
+  absolute: { bottom: 0, left: 0, position: 'absolute', right: 0, top: 0 },
+  centered: { alignSelf: 'center' },
+  fixed: { position: 'absolute' },
+  full: { flex: 1 },
+  landing: { alignItems: 'center', flex: 1, justifyContent: 'center' },
+}
+
+const PROPS = [
+  { prop: 'opacity', default: 1 },
+  { prop: 'rotate', default: '0deg', transform: true },
+  { prop: 'scale', default: 1, transform: true },
+  { prop: 'translateX', default: 0, transform: true },
+  { prop: 'translateY', default: 0, transform: true },
+]
+
 export default class Behavior extends React.PureComponent {
+  ref = React.createRef()
+
   static defaultProps = {
     clamp: false,
     clearStyleProps: false,
@@ -21,10 +43,9 @@ export default class Behavior extends React.PureComponent {
   constructor(props) {
     super(props)
 
-    const { driver, initialState, nativeDriver, unmounted } = this.props
+    const { initialState, nativeDriver, unmounted } = this.props
 
     this.nativeDriver = nativeDriver || new Animated.Value(initialState)
-    this.driver = driver || new Animated.Value(initialState)
 
     this.key = initialState
 
@@ -45,16 +66,13 @@ export default class Behavior extends React.PureComponent {
     const { currentState, disabled } = this.props
     const { currentState: nextCurrentState, disabled: nextDisabled } = nextProps
 
-    // Declarative API
     if (currentState !== nextCurrentState) {
       this.goTo(nextCurrentState)
     }
 
     if (!disabled && nextDisabled) {
       this.disable()
-    }
-
-    if (disabled && !nextDisabled) {
+    } else if (disabled && !nextDisabled) {
       this.enable()
     }
   }
@@ -79,7 +97,7 @@ export default class Behavior extends React.PureComponent {
 
     const { config: stateConfig = {} } = isSequence ? {} : state[key]
 
-    const { type, onComplete, ref, delay, unmount, ...opts } = {
+    const { delay, onComplete, ref, type, unmount, ...opts } = {
       ...defaultConfig,
       ...stateConfig,
       ...config,
@@ -88,18 +106,11 @@ export default class Behavior extends React.PureComponent {
     const curve = type === 'timing' ? Animated.timing : Animated.spring
 
     const animate = (toValue) => {
-      return Animated.parallel([
-        curve(this.nativeDriver, {
-          ...opts,
-          toValue,
-          useNativeDriver: true,
-        }),
-        curve(this.driver, {
-          ...opts,
-          toValue,
-          useNativeDriver: false,
-        }),
-      ])
+      return curve(this.nativeDriver, {
+        ...opts,
+        toValue,
+        useNativeDriver: true,
+      })
     }
 
     if (isSequence) {
@@ -147,12 +158,8 @@ export default class Behavior extends React.PureComponent {
     })
   }
 
-  handleRef = (ref) => {
-    this.ref = ref
-  }
-
   setNativeProps = (props) => {
-    this.ref.setNativeProps(props)
+    this.ref.current.setNativeProps(props)
   }
 
   disable = () => {
@@ -178,12 +185,7 @@ export default class Behavior extends React.PureComponent {
       clearStyleProps,
       config,
       disabled,
-      driver,
       faded,
-      fadedDown,
-      fadedLeft,
-      fadedRight,
-      fadedUp,
       fixed,
       full,
       initialState,
@@ -202,34 +204,16 @@ export default class Behavior extends React.PureComponent {
 
     let { state } = this.props
 
-    const presets = {
-      faded: [{ opacity: 0 }, { opacity: 1 }],
-      fadedDown: [{ opacity: 0, translateY: 20 }, { opacity: 1, translateY: 0 }],
-      fadedLeft: [{ opacity: 0, translateX: -20 }, { opacity: 1, translateX: 0 }],
-      fadedRight: [{ opacity: 0, translateX: 20 }, { opacity: 1, translateX: 0 }],
-      fadedUp: [{ opacity: 0, translateY: -20 }, { opacity: 1, translateY: 0 }],
-    }
-
-    if (faded) state = presets.faded
-    if (fadedDown) state = presets.fadedDown
-    if (fadedLeft) state = presets.fadedLeft
-    if (fadedRight) state = presets.fadedRight
-    if (fadedUp) state = presets.fadedUp
-
-    const layoutPresets = {
-      absolute: { bottom: 0, left: 0, position: 'absolute', right: 0, top: 0 },
-      centered: { alignSelf: 'center' },
-      fixed: { position: 'absolute' },
-      full: { flex: 1 },
-      landing: { alignItems: 'center', flex: 1, justifyContent: 'center' },
+    if (faded) {
+      state = PRESETS.faded
     }
 
     const viewStyles = {
-      ...layoutPresets[absolute && 'absolute'],
-      ...layoutPresets[centered && 'centered'],
-      ...layoutPresets[fixed && 'fixed'],
-      ...layoutPresets[full && 'full'],
-      ...layoutPresets[landing && 'landing'],
+      ...LAYOUT_PRESETS[absolute && 'absolute'],
+      ...LAYOUT_PRESETS[centered && 'centered'],
+      ...LAYOUT_PRESETS[fixed && 'fixed'],
+      ...LAYOUT_PRESETS[full && 'full'],
+      ...LAYOUT_PRESETS[landing && 'landing'],
     }
 
     const propStyles = Object.keys(rest).reduce((obj, key) => {
@@ -269,46 +253,29 @@ export default class Behavior extends React.PureComponent {
       }, [])
     }
 
-    const addProp = (prop, defaultValue, native) => {
-      const propDriver = native ? this.nativeDriver : this.driver
-
-      return propDriver.interpolate({
+    const addProp = (prop, defaultValue) => {
+      return this.nativeDriver.interpolate({
         inputRange,
         outputRange: getRange(prop, defaultValue),
         extrapolate: clamp ? 'clamp' : undefined,
       })
     }
 
-    const defaultStyleProps = clearStyleProps
-      ? []
-      : [
-          { prop: 'opacity', default: 1, native: true },
-          { prop: 'rotate', default: '0deg', native: true, transform: true },
-          { prop: 'scale', default: 1, native: true, transform: true },
-          { prop: 'translateX', default: 0, native: true, transform: true },
-          { prop: 'translateY', default: 0, native: true, transform: true },
-
-          { prop: 'backgroundColor', default: 'transparent' },
-          { prop: 'height', default: null },
-          { prop: 'width', default: null },
-        ]
+    const defaultStyleProps = clearStyleProps ? [] : PROPS
 
     const nativeStyles = {}
-    const styles = {}
 
     const allStyleProps = [...defaultStyleProps, ...styleProps]
 
-    allStyleProps.forEach(({ prop, default: defaultValue, native, transform }) => {
+    allStyleProps.forEach(({ prop, default: defaultValue, transform }) => {
       if (!skipStyleProps.includes(prop)) {
-        const stylesRef = native ? nativeStyles : styles
-
         if (transform) {
-          stylesRef.transform = [
-            ...(stylesRef.transform || []),
-            { [prop]: addProp(prop, defaultValue, native) },
+          nativeStyles.transform = [
+            ...(nativeStyles.transform || []),
+            { [prop]: addProp(prop, defaultValue) },
           ]
         } else {
-          stylesRef[prop] = addProp(prop, defaultValue, native)
+          nativeStyles[prop] = addProp(prop, defaultValue)
         }
       }
     })
@@ -316,10 +283,10 @@ export default class Behavior extends React.PureComponent {
     return (
       <Animated.View
         pointerEvents={pointerEvents}
-        ref={this.handleRef}
+        ref={this.ref}
         style={[style, viewStyles, propStyles, nativeStyles]}
       >
-        <Animated.View style={styles}>{children}</Animated.View>
+        {children}
       </Animated.View>
     )
   }
