@@ -81,7 +81,6 @@ export default class Behavior extends React.PureComponent {
     const { initialState } = this.props
 
     this.nativeDriver.setValue(state || initialState)
-    this.driver.setValue(state || initialState)
 
     this.setState({ mounted: true })
   }

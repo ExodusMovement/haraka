@@ -2,7 +2,7 @@
   "license": "MIT",
   "name": "@exodus/haraka",
   "description": "Stateful animations in React Native.",
-  "version": "0.0.36",
+  "version": "0.0.37",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
