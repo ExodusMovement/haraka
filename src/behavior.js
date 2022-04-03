@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Animated } from 'react-native'
+import { Animated, View } from 'react-native'
 
 const PRESETS = {
   faded: [{ opacity: 0 }, { opacity: 1 }],
@@ -178,6 +178,7 @@ export default class Behavior extends React.PureComponent {
 
     const {
       absolute,
+      animateOff,
       centered,
       children,
       clamp,
@@ -222,6 +223,14 @@ export default class Behavior extends React.PureComponent {
 
       return { ...obj, [key]: rest[key] }
     }, {})
+
+    if (animateOff) {
+      return (
+        <View pointerEvents={pointerEvents} ref={this.ref} style={[style, viewStyles, propStyles]}>
+          {children}
+        </View>
+      )
+    }
 
     const inputRange =
       keys ||
