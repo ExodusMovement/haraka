@@ -77,6 +77,7 @@ type StyleProp = {
 }
 
 type Behavior = {
+  animateOff?: bool, // default = false, set to true to turn off animation completely
   config?: DefaultConfig,
   clearStyleProps?: bool, // removes all default style props on mount and utilizes whatever in `styleProps` only
   disabled?: bool, // allows disabling the behavior interactivity through pointerEvents = none
