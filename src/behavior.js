@@ -178,7 +178,7 @@ export default class Behavior extends React.PureComponent {
 
     const {
       absolute,
-      animateOff,
+      freeze,
       centered,
       children,
       clamp,
@@ -224,7 +224,7 @@ export default class Behavior extends React.PureComponent {
       return { ...obj, [key]: rest[key] }
     }, {})
 
-    if (animateOff) {
+    if (freeze) {
       return (
         <View pointerEvents={pointerEvents} ref={this.ref} style={[style, viewStyles, propStyles]}>
           {children}
