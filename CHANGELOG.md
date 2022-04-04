@@ -1,3 +1,8 @@
+# 0.0.38
+
+- Add `freeze` prop that disables animations when `true`.
+
+# 0.0.37
 # 0.0.36
 
 - **Breaking:** Removed non-native style props (`backgroundColor`, `height`, `width`).
