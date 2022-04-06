@@ -224,21 +224,25 @@ export default class Behavior extends React.PureComponent {
       return { ...obj, [key]: rest[key] }
     }, {})
 
+    const defaultStyleProps = clearStyleProps ? [] : PROPS
+
+    const allStyleProps = [...defaultStyleProps, ...styleProps]
+
     if (freeze) {
       const currentState = state[this.key]
       const nativeOnFreezeStyles = {}
-      Object.keys(currentState).forEach((prop) => {
+      allStyleProps.forEach(({ prop, default: defaultValue, transform }) => {
         if (!skipStyleProps.includes(prop)) {
-          if (prop === 'opacity') {
-            nativeOnFreezeStyles[prop] = currentState[prop]
-          } else {
+          if (transform) {
             nativeOnFreezeStyles.transform = [
               ...(nativeOnFreezeStyles.transform || []),
-              { [prop]: currentState[prop] },
+              { [prop]: currentState[prop] ?? defaultValue },
             ]
+          } else {
+            nativeOnFreezeStyles[prop] = currentState[prop] ?? defaultValue
           }
         }
-      }, {})
+      })
       return (
         <View
           pointerEvents={pointerEvents}
@@ -287,11 +291,7 @@ export default class Behavior extends React.PureComponent {
       })
     }
 
-    const defaultStyleProps = clearStyleProps ? [] : PROPS
-
     const nativeStyles = {}
-
-    const allStyleProps = [...defaultStyleProps, ...styleProps]
 
     allStyleProps.forEach(({ prop, default: defaultValue, transform }) => {
       if (!skipStyleProps.includes(prop)) {
