@@ -92,7 +92,12 @@ export default class Behavior extends React.PureComponent {
   goTo = (key, config = {}) => {
     const isSequence = Array.isArray(key)
 
-    const { config: defaultConfig, state } = this.props
+    const { config: defaultConfig, state, freeze } = this.props
+
+    if (freeze) {
+      this.key = key
+      return
+    }
 
     const { config: stateConfig = {} } = isSequence ? {} : state[key]
 
@@ -224,14 +229,6 @@ export default class Behavior extends React.PureComponent {
       return { ...obj, [key]: rest[key] }
     }, {})
 
-    if (freeze) {
-      return (
-        <View pointerEvents={pointerEvents} ref={this.ref} style={[style, viewStyles, propStyles]}>
-          {children}
-        </View>
-      )
-    }
-
     const inputRange =
       keys ||
       Array(state.length)
@@ -262,6 +259,11 @@ export default class Behavior extends React.PureComponent {
     }
 
     const addProp = (prop, defaultValue) => {
+      if (freeze) {
+        const value = state[this.key] && state[this.key][prop]
+        return value !== null && value !== undefined ? value : defaultValue
+      }
+      
       return this.nativeDriver.interpolate({
         inputRange,
         outputRange: getRange(prop, defaultValue),
@@ -288,14 +290,16 @@ export default class Behavior extends React.PureComponent {
       }
     })
 
+    const Container = freeze ? View : Animated.View
+
     return (
-      <Animated.View
+      <Container
         pointerEvents={pointerEvents}
         ref={this.ref}
         style={[style, viewStyles, propStyles, nativeStyles]}
       >
         {children}
-      </Animated.View>
+      </Container>
     )
   }
 }
