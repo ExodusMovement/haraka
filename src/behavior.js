@@ -224,36 +224,6 @@ export default class Behavior extends React.PureComponent {
       return { ...obj, [key]: rest[key] }
     }, {})
 
-    const defaultStyleProps = clearStyleProps ? [] : PROPS
-
-    const allStyleProps = [...defaultStyleProps, ...styleProps]
-
-    if (freeze) {
-      const currentState = state[this.key]
-      const nativeOnFreezeStyles = {}
-      allStyleProps.forEach(({ prop, default: defaultValue, transform }) => {
-        if (!skipStyleProps.includes(prop)) {
-          if (transform) {
-            nativeOnFreezeStyles.transform = [
-              ...(nativeOnFreezeStyles.transform || []),
-              { [prop]: currentState[prop] ?? defaultValue },
-            ]
-          } else {
-            nativeOnFreezeStyles[prop] = currentState[prop] ?? defaultValue
-          }
-        }
-      })
-      return (
-        <View
-          pointerEvents={pointerEvents}
-          ref={this.ref}
-          style={[style, viewStyles, propStyles, nativeOnFreezeStyles]}
-        >
-          {children}
-        </View>
-      )
-    }
-
     const inputRange =
       keys ||
       Array(state.length)
@@ -284,6 +254,7 @@ export default class Behavior extends React.PureComponent {
     }
 
     const addProp = (prop, defaultValue) => {
+      if (freeze) return state[this.key][prop] ?? defaultValue
       return this.nativeDriver.interpolate({
         inputRange,
         outputRange: getRange(prop, defaultValue),
@@ -291,7 +262,11 @@ export default class Behavior extends React.PureComponent {
       })
     }
 
+    const defaultStyleProps = clearStyleProps ? [] : PROPS
+
     const nativeStyles = {}
+
+    const allStyleProps = [...defaultStyleProps, ...styleProps]
 
     allStyleProps.forEach(({ prop, default: defaultValue, transform }) => {
       if (!skipStyleProps.includes(prop)) {
@@ -306,14 +281,16 @@ export default class Behavior extends React.PureComponent {
       }
     })
 
+    const Container = freeze ? View : Animated.View
+
     return (
-      <Animated.View
+      <Container
         pointerEvents={pointerEvents}
         ref={this.ref}
         style={[style, viewStyles, propStyles, nativeStyles]}
       >
         {children}
-      </Animated.View>
+      </Container>
     )
   }
 }
