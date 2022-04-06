@@ -225,8 +225,22 @@ export default class Behavior extends React.PureComponent {
     }, {})
 
     if (freeze) {
+      const currentState = state[this.key]
+      const currentStyles = Object.keys(currentState).reduce((acc, curr) => {
+        switch (curr) {
+          case 'opacity':
+            const output = { ...acc, opacity: currentState[curr] }
+            return output
+          default:
+            return acc
+        }
+      }, {})
       return (
-        <View pointerEvents={pointerEvents} ref={this.ref} style={[style, viewStyles, propStyles]}>
+        <View
+          pointerEvents={pointerEvents}
+          ref={this.ref}
+          style={[style, viewStyles, propStyles, currentStyles]}
+        >
           {children}
         </View>
       )
