@@ -92,7 +92,9 @@ export default class Behavior extends React.PureComponent {
   goTo = (key, config = {}) => {
     const isSequence = Array.isArray(key)
 
-    const { config: defaultConfig, state } = this.props
+    const { config: defaultConfig, state, freeze } = this.props
+
+    if (freeze) this.key = key
 
     const { config: stateConfig = {} } = isSequence ? {} : state[key]
 
