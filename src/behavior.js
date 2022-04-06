@@ -226,20 +226,24 @@ export default class Behavior extends React.PureComponent {
 
     if (freeze) {
       const currentState = state[this.key]
-      const currentStyles = Object.keys(currentState).reduce((acc, curr) => {
-        switch (curr) {
-          case 'opacity':
-            const output = { ...acc, opacity: currentState[curr] }
-            return output
-          default:
-            return acc
+      const nativeOnFreezeStyles = {}
+      Object.keys(currentState).forEach((prop) => {
+        if (!skipStyleProps.includes(prop)) {
+          if (prop === 'opacity') {
+            nativeOnFreezeStyles[prop] = currentState[prop]
+          } else {
+            nativeOnFreezeStyles.transform = [
+              ...(nativeOnFreezeStyles.transform || []),
+              { [prop]: currentState[prop] },
+            ]
+          }
         }
       }, {})
       return (
         <View
           pointerEvents={pointerEvents}
           ref={this.ref}
-          style={[style, viewStyles, propStyles, currentStyles]}
+          style={[style, viewStyles, propStyles, nativeOnFreezeStyles]}
         >
           {children}
         </View>
