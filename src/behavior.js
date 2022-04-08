@@ -257,7 +257,7 @@ export default class Behavior extends React.PureComponent {
 
     const addProp = (prop, defaultValue) => {
       if (freeze) {
-        return (state[this.key] && state[this.key][prop]) || defaultValue
+        return (state[this.key] && state[this.key][prop]) ?? defaultValue
       }
       return this.nativeDriver.interpolate({
         inputRange,
