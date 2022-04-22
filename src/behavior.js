@@ -94,7 +94,10 @@ export default class Behavior extends React.PureComponent {
 
     const { config: defaultConfig, state, freeze } = this.props
 
-    if (freeze) this.key = key
+    if (freeze) {
+      this.key = key
+      return
+    }
 
     const { config: stateConfig = {} } = isSequence ? {} : state[key]
 
